@@ -1,0 +1,46 @@
+
+<link rel="stylesheet" href="/css/profile.css">
+<div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h4>Update Profile Picture</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="/api/v1/users/updateProfile" method="post" enctype="multipart/form-data">
+                            <div class="text-center mb-4" id="user-profile-image-container">
+                                <% if(user.avatar){%>
+                                    <img src="<%=user.avatar %>"
+                                 alt="User Profile Picture" class="img-thumbnail"
+                                    id="profile-image"/>
+                                <%}else{%>
+                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                 alt="User Profile Picture" class="img-thumbnail"
+                                    id="profile-image"/>
+                                <% }%>
+                            </div>
+                            <div class="form-group">
+
+                                <!-- <div class="form-group" id="create-post-img-container">
+                                    <label for="imageUpload">Upload Image</label>
+                                    <input type="file" class="form-control-file" id="imageUpload" name="avatar">
+                                </div> -->
+
+
+                                <label for="profile-picture" class="font-weight-bold">Select a new profile picture</label>
+                                <input type="file" class="form-control-file" id="profile-picture" name="avatar"
+                                    accept="image/*">
+                            </div>
+                            <div class="form-group text-center mt-4">
+                                <button type="submit" class="btn btn-primary">Upload Picture</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+

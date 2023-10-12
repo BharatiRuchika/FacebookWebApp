@@ -1,0 +1,136 @@
+<link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="/css/profile.css">
+<div id="home-container">
+    <% if(locals.user){%>
+        <div class="container" id="home-container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Left side -->
+                    <div class="row">
+                        <div class="col-6">
+                            <!-- first row -->
+                            <div class="row divContainers" id="create-post-container">
+                                <div class="col-12">
+                                    <div class="row" id="create-post">
+                                        <div class="col-2">
+                                            <div id="create-post-profile-image">
+                                                <% if(locals.user.avatar){%>
+                                                <img src="<%=locals.user.avatar %>"
+                                                    alt="Profile Image">
+                                                <%}else{%>
+                                                    <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                                    alt="Profile Image">
+                                                <%}%>
+                                    
+                                            </div>
+                                        </div>
+                                        <div class="col-10">
+                                            <div id="create-post-div">
+                                                <span>What's on your mind?</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    <div class="row" id="update">
+                                        <div class="col-4">
+                                            <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/epGAMnVkMsy.png" />
+                                            <span>Live Video</span>
+                                        </div>
+                                        <div class="col-4">
+                                            <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yQ/r/74AG-EvEtBm.png" />
+                                            <span>Photo/Video</span>
+                                        </div>
+                                        <div class="col-4">
+                                            <img src="https://static.xx.fbcdn.net/rsrc.php/v3/y2/r/EAEUIJ8hZzw.png" />
+                                            <span>Life event</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- second row -->
+                            
+                                    <% for(post of posts){ %>
+                                        <div class="row divContainers" id="post-container">
+                                            <%- include('_post') %>
+                                        </div>
+                                    <%}%>
+                            </div>
+                            
+                       
+
+
+
+
+
+
+
+                        <!-- right side -->
+                        <div class="col-6">
+                            <div class="row divContainers" id="user-profile-friends">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <h5>Friends</h5>
+                                            <span style="color: gray;">143 friends</span>
+                                        </div>
+                                        <div class="col-5 offset-2">
+                                            <a href="">
+                                                See All Friends
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <% for(user of all_users){ %>
+                                            <div class="col-4">
+                                                <p>
+                                                    <a href="/users/profile/<%= user.id %>">
+                                                        <%=user.name%>
+                                                    </a>
+                                                </p>
+                                            </div>
+        
+                                            <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row divContainers" id="user-profile-friends">
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <h5>Users</h5>
+                                            <span style="color: gray;">143 Users</span>
+                                        </div>
+                                        <div class="col-5 offset-2">
+                                            <a href="">
+                                                See All Users
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <% for(user of all_users){ %>
+                                            <div class="col-4">
+                                                <p>
+                                                    <a href="/users/profile/<%= user.id %>">
+                                                        <%=user.name%>
+                                                    </a>
+                                                </p>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+</div>
+

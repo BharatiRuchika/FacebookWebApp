@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="/css/sign_up.css">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="sign-up-facebook-logo mb-3">
+                        <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-facebook-name-with-back-shadow-png-image_4861810.jpg"/> 
+                     </div>
+                     
+                    <form action="/api/v1/users/update-user" method="POST">
+                        <div class="mb-3">
+                            <label for="city" class="form-label">HomeTown/City</label>
+                            <input type="text" class="form-control" id="city" value="<%=user.city %>" name="city" placeholder="Enter your city" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="college" class="form-label">University/College</label>
+                            <input type="text" class="form-control" id="college" value="<%=user.college %>" name="college" placeholder="Enter your college/university name">
+                        </div>
+                        <div class="mb-3">
+                            
+                            <label for="relationshipStatus" class="form-label">Relationship Status</label>
+                        <select class="form-control" value="<%=user.relationshipStatus %>" id="relationshipStatus" name="relationshipStatus">
+                            <option value="">Select relationship status</option>
+                            <option value="single" <%= user.relationshipStatus === 'single' ? 'selected' : '' %>>Single</option>
+                            <option value="in_a_relationship" <%= user.relationshipStatus === 'in_a_relationship' ? 'selected' : '' %>>In a Relationship</option>
+                            <option value="engaged" <%= user.relationshipStatus === 'engaged' ? 'selected' : '' %>>Engaged</option>
+                            <option value="married" <%= user.relationshipStatus === 'married' ? 'selected' : '' %>>Married</option>
+                            <option value="complicated" <%= user.relationshipStatus === 'complicated' ? 'selected' : '' %>>It's Complicated</option>
+                            <option value="other" <%= user.relationshipStatus === 'other' ? 'selected' : '' %>>Other</option>
+                        </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dob" class="form-label">Date Of Birth</label>
+                            <input type="date" value="<%= (user.dateOfBirth ? user.dateOfBirth.toISOString().split('T')[0] : '') %>" class="form-control" id="dob" name="dateOfBirth" placeholder="Enter your date of birth">
+                        </div>
+                        <!-- <div class="mb-3">
+                            <label for="profilePic" class="profile-pic-label">Upload Profile Picture</label>
+                    <input type="file" id="profilePic" name="avatar" name="profilePic" class="profile-pic-upload">
+                        </div> -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>

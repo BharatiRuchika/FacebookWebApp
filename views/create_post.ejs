@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="/css/post.css">
+         <div class="container mt-5">
+             <div class="row justify-content-center">
+                 <div class="col-md-6">
+                     <div class="card">
+                         <div class="card-body">
+                             <h5 class="card-title">Create Post</h5>
+                             <form action="" id="create-post-form" method="POST"  enctype="multipart/form-data">
+                                 <div class="form-group">
+                                     <div id="create-post-input">
+                                        <input class="emoji-container" type="text" placeholder="What's on your mind?" id="content" name="content"></input>
+                                     </div>
+                                 </div>
+                                 <div class="text-right" id="emoji-button">
+                            <button type="button" class="btn btn-primary mr-2">&#x1F60D</button>
+                                 </div>
+                                 <div id="emojis">
+                                    
+                                </div>
+                                
+                                 <div class="form-group" id="create-post-img-container">
+                                     <label for="imageUpload">Upload Image</label>
+                                     <input type="file" class="form-control-file" id="imageUpload" name="avatar">
+                                 </div>
+                                 <button type="submit" id="submitBtn" class="btn btn-primary">Post</button>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+        
+
+<script>
+
+    const emojiInput = document.getElementById('emoji-button');
+    const emojiContainer = document.querySelector('.emoji-container');
+    const newemoji = document.getElementById('emojis');
+   
+    const emojis = ['😀', '😂', '😍', '👍', '👋', '🎉'];
+    emojis.forEach((emoji) => {
+        const emojiButton = document.createElement('div');
+        emojiButton.className = 'emoji';
+        emojiButton.textContent = emoji;
+        emojiButton.addEventListener('click', () => {
+            emojiContainer.value += emoji
+            newemoji.style.display = 'none';
+        });
+        newemoji.appendChild(emojiButton);
+    });
+
+    emojiInput.addEventListener('click', function() {
+        console.log('clicked')
+        newemoji.style.display = 'block';
+    });
+     </script>
+        
+    
+     

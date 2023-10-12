@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="/css/sign_up.css">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="sign-up-facebook-logo mb-3">
+                        <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-facebook-name-with-back-shadow-png-image_4861810.jpg"/> 
+                     </div>
+                     
+                    <form action="/api/v1/users/create-session" method="POST">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email"  name="email" placeholder="Enter your email" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="password"  class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
+                                >
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Sign In</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body" id="sign-up-footer">
+                    <span>Don't have an account?   <a href="/api/v1/users/sign-up">Sign Up</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="login-buttons">
+        <!-- Facebook Login Button -->
+        <a href="#" class="login-button login-button-facebook">
+            <i class="fab fa-facebook-f"></i> Login with Facebook
+        </a>
+
+        <!-- Gmail Login Button -->
+        <a href="/api/v1/users/auth/google" class="login-button login-button-google">
+            <i class="fab fa-google"></i> Login with Gmail
+        </a>
+
+        <!-- GitHub Login Button -->
+        <a href="#" class="login-button login-button-github">
+            <i class="fab fa-github"></i> Login with GitHub
+        </a>
+    </div>
+</div>

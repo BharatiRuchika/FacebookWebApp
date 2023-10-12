@@ -1,0 +1,256 @@
+<link rel="stylesheet" href="/css/profile.css">
+<script src="/js/user_profile.js"></script>
+<div id="user-profile-container">
+    <div id="profile-header-container" class="divContainers">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Profile Header -->
+                    <div class="profile-header">
+                        <div id="user-profile-image-container">
+                            <%if(user.avatar){%>
+                            <img src="<%=user.avatar %>"
+                                alt="Profile Image"/>
+                            <%}else{%>
+                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                alt="Profile Image"/>
+                            <%}%>
+                                <div class="edit-icon">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                        </div>
+                        <h1 class="profile-name"><%=user.fullName %></h1>
+                        <p class="user-friends">400 friends</p>
+                        <% if(user.bio){%>
+                            <p><h4><%=user.bio %></h4></p>
+                        <%}%>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 navbar-container">
+                    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarProfileNav" aria-controls="navbarNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <i class="fas fa-bars facebook-icons"></i>
+                    </button>
+
+                    <!-- All Icons (visible on larger screens) -->
+                    <div class="d-none d-lg-block">
+                        <nav class="navbar navbar-expand-lg user-profile-navbar">
+                            <ul class="navbar-nav">
+                                <li class="nav-item" onclick="changeBorderColor(this)">
+                                    <a class="nav-link" href="#">Posts</a>
+                                </li>
+                                <li class="nav-item" onclick="changeBorderColor(this)">
+                                    <a class="nav-link" href="#">About</a>
+                                </li>
+                                <li class="nav-item" onclick="changeBorderColor(this)">
+                                    <a class="nav-link" href="#">Friends</a>
+                                </li>
+                                <li class="nav-item" onclick="changeBorderColor(this)">
+                                    <a class="nav-link" href="#">Photos</a>
+                                </li>
+                                <li class="nav-item" onclick="changeBorderColor(this)">
+                                    <a class="nav-link" href="#">Videos</a>
+                                </li>
+                                <li class="nav-item" onclick="changeBorderColor(this)">
+                                    <a class="nav-link" href="#">Check-ins</a>
+                                </li>
+                                <li class="nav-item" onclick="changeBorderColor(this)">
+                                    <a class="nav-link" href="#">More</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarProfileNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Posts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Friends</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Photos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Videos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Check-ins</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">More</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <div class="container" id="user-profile-details">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="row divContainers" id="Edit-Details">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <h4>Intro</h4>
+                                <% if(user.bio){%>
+                                    <a href="/api/v1/users/bio"> <button>Edit Bio</button></a>
+                                <%}else{%>
+                                    <a href="/api/v1/users/bio"> <button>Add Bio</button></a>
+                                <%}%>
+                                
+                            </div>
+                            <%if(user.college){%>
+                            <div class="col-12">
+                                <div class="row mt-3">
+                                    <div class="col-1">
+                                        <i class="fa-solid fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="col-11">
+                                        <span>Studied At <b><%=user.college %></b></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(user.city){%>
+                            <div class="col-12">
+                                <div class="row mt-3">
+                                    <div class="col-1">
+                                        <i class="fa-solid fa-house"></i>
+                                    </div>
+                                    <div class="col-11">
+                                        <span> Lives in <b><%=user.city %></b></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <%}%>
+                            <% if(user.relationshipStatus){%>
+                            <div class="col-12">
+                                <div class="row mt-3">
+                                    <div class="col-1">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </div>
+                                    <div class="col-11">
+                                        <span> <%=user.relationshipStatus %></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <%}%>
+                            <div class="col-12 mt-3">
+                                <a href="/api/v1/users/edit"><button>Edit Details</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row divContainers" id="user-profile-photoes">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-5">
+                                <h5>Photos</h5>
+                            </div>
+                            <div class="col-5 offset-2">
+                                <a href="">
+                                    See All Photos
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row divContainers" id="user-profile-friends">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-5">
+                                <h5>Friends</h5>
+                                <span style="color: gray;">143 friends</span>
+                            </div>
+                            <div class="col-5 offset-2">
+                                <a href="">
+                                    See All Friends
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="row divContainers" id="create-post-container">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-2">
+                                <div id="create-post-profile-image">
+                                    <%if(user.avatar){%>
+                                    <img src="<%=user.avatar %>"
+                                        alt="Profile Image">
+                                    <%}else{%>
+                                        <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                        alt="Profile Image">
+                                    <%}%>
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <div id="create-post-div">
+                                    <span>What's on your mind?</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row" id="update">
+                            <div class="col-4">
+                                <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/epGAMnVkMsy.png" />
+                                <span>Live Video</span>
+                            </div>
+                            <div class="col-4">
+                                <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yQ/r/74AG-EvEtBm.png" />
+                                <span>Photo/Video</span>
+                                <!-- <div class="row">
+                                    <div class="col-4">
+                                        <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yQ/r/74AG-EvEtBm.png"/>
+                                    </div>
+                                    <div class="col-8">
+                                     Photo/Video
+                                    </div>
+                                </div> -->
+                            </div>
+                            <div class="col-4">
+                                <img src="https://static.xx.fbcdn.net/rsrc.php/v3/y2/r/EAEUIJ8hZzw.png" />
+                                <span>Life event</span>
+                                <!-- <div class="row">
+                                    <div class="col-4">
+                                        <img src="https://static.xx.fbcdn.net/rsrc.php/v3/y2/r/EAEUIJ8hZzw.png"/>
+                                    </div>
+                                    <div class="col-8">
+                                        Life event
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- <h5>Posts</h5> -->
+                <% if(user.posts.length>0){%>
+
+                    <% for(post of user.posts){ %>
+                        <div class="row divContainers" id="post-container">
+                            <%- include('_post') %>
+                        </div>
+                    <%}%>
+               
+                <%}%>
+            </div>
+        </div>
+
+    </div>
+</div>
