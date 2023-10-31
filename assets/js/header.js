@@ -1,11 +1,9 @@
-
-$('#curr-profile').on('click',function(){
-    // console.log('clicked')
-    window.location.href='/api/v1/users/display-profile'
-    // $.ajax({
-    //     type:'get',
-    //     url:'/api/v1/users/display-user-profile',
-    //     success:function(data){
-    //     }
-    // })
+$('.curr-profile').on('click',function(){
+    console.log('clicked')
+    let id = $(this).attr('id')
+    console.log('id',id)
+    window.location.href=`/api/v1/users/display-profile/${id}`
 })
+
+
+

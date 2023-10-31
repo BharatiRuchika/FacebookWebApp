@@ -1,0 +1,34 @@
+<!-- Link to the main CSS file for the home page -->
+<link rel="stylesheet" href="/css/home.css">
+
+<!-- Link to the CSS file for user profiles -->
+<link rel="stylesheet" href="/css/profile.css">
+<div class="row divContainers" id="user-profile-friends">
+<div class="col-12">
+    <div class="row">
+        <% for(user of all_users){ %>
+            <!-- Individual user container -->
+            <div class="col-3 all-user-container" id="<%=user._id %>">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Check if the user has an avatar and display it if available -->
+                        <%if(user.avatar){ %>
+                        <img src="<%=user.avatar%>"/>
+                        <%}else{%>
+                        <!-- Display a default image for users without avatars -->
+                        <img src="/images/unknown.jpeg"/>
+                        <%}%>
+                    </div>
+                </div>
+
+                <!-- Display the user's full name -->
+                <div class="row">
+                    <div class="col-12">
+                        <h6><%=user.fullName %></h6>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+    </div>
+</div>
+</div>

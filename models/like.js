@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const likeSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.ObjectId,
-        ref: 'User', // Replace with your 'User' model name
+        ref: 'User', 
         required: true,
     },
     likeable: {
@@ -16,10 +16,14 @@ const likeSchema = new mongoose.Schema({
         required: true,
         enum: ['Post', 'Comment'],
     },
-    emoji:[{
+    emojiType:{
         type:String,
         required:true
-    }]
+    },
+    emoji:{
+        type:String,
+        required:true
+    }
 }, {
     timestamps: true,
 })

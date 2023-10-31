@@ -1,0 +1,23 @@
+.user-container img{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+
+.all-user-container img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.all-post-container img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.friend-container img{
+width: 100%;
+height: 200px;
+object-fit: cover;
+}

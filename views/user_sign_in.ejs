@@ -1,23 +1,34 @@
+<!-- Link to an external CSS file for styling -->
 <link rel="stylesheet" href="/css/sign_up.css">
+
+
+<!-- Container for the sign-in form -->
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-md-3">
+            <!-- Card element to create a bordered box for the form -->
             <div class="card">
                 <div class="card-body">
+                    <!-- Facebook logo image -->
                     <div class="sign-up-facebook-logo mb-3">
                         <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-facebook-name-with-back-shadow-png-image_4861810.jpg"/> 
                      </div>
-                     
+                     <!-- Form for user sign-in -->
                     <form action="/api/v1/users/create-session" method="POST">
+                        <!-- Input field for email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">Email address</label>
                             <input type="email" class="form-control" id="email"  name="email" placeholder="Enter your email" >
                         </div>
+
+                        <!-- Input field for password -->
                         <div class="mb-3">
                             <label for="password"  class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
                                 >
                         </div>
+
+                        <!-- Button to submit the form for sign-in -->
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Sign In</button>
                         </div>
@@ -26,6 +37,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Link to the sign-up page for users without an account -->
     <div class="row mt-3">
         <div class="col-md-6 offset-md-3">
             <div class="card">
@@ -35,9 +48,11 @@
             </div>
         </div>
     </div>
+
+     <!-- Social media login buttons (Facebook, Gmail, GitHub) -->
     <div class="login-buttons">
         <!-- Facebook Login Button -->
-        <a href="#" class="login-button login-button-facebook">
+        <a href="/api/v1/users/auth/facebook" class="login-button login-button-facebook">
             <i class="fab fa-facebook-f"></i> Login with Facebook
         </a>
 
@@ -47,7 +62,7 @@
         </a>
 
         <!-- GitHub Login Button -->
-        <a href="#" class="login-button login-button-github">
+        <a href="/api/v1/users/auth/github" class="login-button login-button-github">
             <i class="fab fa-github"></i> Login with GitHub
         </a>
     </div>

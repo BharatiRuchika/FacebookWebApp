@@ -1,0 +1,32 @@
+<!-- Link to the main CSS file for the home page -->
+<link rel="stylesheet" href="/css/home.css">
+
+<!-- Link to the CSS file for user profiles -->
+<link rel="stylesheet" href="/css/profile.css">
+<div class="row divContainers" id="user-profile-friends">
+<div class="col-12">
+    <div class="row">
+        <%if(all_posts.length==0){%>
+
+            <!-- No photos to display -->
+            <h1>No Photoes yet</h1>
+        <%}else{%>
+
+            <!-- Loop through and display photos -->
+        <% for(photo of all_posts){ %>
+
+             <!-- Individual post container -->
+            <div class="col-3 all-post-container" id="<%=photo._id %>">
+
+                 <!-- Post image -->
+                <div class="row">
+                    <div class="col-12">
+                        <img src="<%=photo.postImage%>"/>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        <%}%>
+    </div>
+</div>
+</div>

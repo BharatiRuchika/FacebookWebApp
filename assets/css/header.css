@@ -16,7 +16,9 @@
     color: #ffffff; 
 } */
 
-
+.facebook-header a{
+    color: white;
+}
 
 .facebook-header {
     background-color: #1877f2;
@@ -127,4 +129,90 @@
 }
 #profileDetails div>div:hover{
     background-color: rgb(240,242,245);
+}
+
+.friend-request-btn {
+    position: relative;
+    display: inline-block;
+    background: none;
+    border: none;
+}
+
+
+.friend-message-btn{
+    position: relative;
+    display: inline-block;
+    background: none;
+    border: none;
+}
+
+
+.badge-notification {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #FF5733; /* Badge background color */
+    color: #fff; /* Badge text color */
+    /* font-size: 1rem; */
+    border-radius: 50%;
+    padding: 0.1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.modals{
+    color: black;
+}
+
+
+.notification-list  {
+    position: absolute;
+    top: 50px;
+    /* right: 50%; */
+    z-index: 1000; /* Adjust the z-index as needed */
+    background: #fff;
+    border: 1px solid #ddd;
+    max-height: 200px; /* Set a max height to limit the list size */
+    overflow-y: auto; /* Add a scrollbar for long lists */
+    display: none;
+    transition: display 0.3s ease;
+    width: 300px;
+}
+
+.notification-list.show {
+    display: block;
+}
+
+.modals li{
+    list-style: none;
+}
+
+.modal-profile-images img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 0px;
+}
+
+.modal-text{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-lists{
+    padding: 0.5rem 0rem;
+}
+.modal-lists:hover{
+background-color: rgb(228,230,234);
+}
+
+#messenger-body img{
+    width:100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+#friend_messages_container a{
+    color: black;
+    text-decoration: none;
 }

@@ -2,86 +2,87 @@ const Comment = require('../../../models/comment')
 const Post = require('../../../models/post')
 const Like = require('../../../models/like')
 module.exports.toggleLike = async function(req,res){
-    console.log("im in toggleLike")
-    console.log('id',req.query.id)
-    console.log('type',req.query.type)
-    console.log('emoji',req.query.emoji)
-    let postId = req.query.id
-    let type = req.query.type
-    let emojiType = req.query.emoji
     try{
+        let Id = req.query.id
+        let type = req.query.type
+        let emojiType = req.query.emojiType
+        let emoji = req.query.emoji
         let likeable;
         let deleted = false;
         if(type=='Post'){
-            likeable = await Post.findById(postId).populate('likes')
+            likeable = await Post.findById(Id).populate('likes')
         }else{
-            likeable = await Comment.findById(postId).populate('likes')
-            
+            likeable = await Comment.findById(Id).populate('likes')  
         }
-        const emojiIndex = likeable.emojis.findIndex((emoji) => emoji.type === emojiType);
-        console.log('emojiIndex',emojiIndex)
-        // console.log('likeable',likeable)
-        
-        let existingLike = await Like.findOneAndRemove({
-            likeable : req.query.id,
+        const emojiIndex = likeable.emojis.findIndex((emoji) => emoji.type === emojiType);    
+        let existingLike = await Like.findOne({
+            likeable : Id,
             onModel : req.query.type,
             user : req.user.id,
-            emoji : emojiType
         })
-
-    
         if(existingLike){
-            console.log('im in existing like')
-            console.log('ifcount',likeable.emojis[emojiIndex].count)
-            likeable.emojis[emojiIndex].count = likeable.emojis[emojiIndex].count - 1;
-            console.log('ifcount1',likeable.emojis[emojiIndex].count)
-            likeable.likes.pull(existingLike._id)
-            deleted = true
+            let existingemoji = existingLike.emojiType
+            if(existingemoji==emojiType){
+                deleted = true
+                likeable.emojis[emojiIndex].count = likeable.emojis[emojiIndex].count - 1;
+                likeable.likes.pull(existingLike._id)
+                await Like.deleteOne({_id:existingLike._id})
+            }else{
+                await Like.findOneAndUpdate(existingLike._id,{
+                    emojiType:emojiType,
+                    emoji:emoji
+                })
+                let index =  likeable.emojis.findIndex((element) => element.type==existingemoji);
+                likeable.emojis[index].count = likeable.emojis[index].count - 1;
+                if(emojiIndex==-1){
+                    await likeable.emojis.push({
+                        type : emojiType,
+                        count : 1
+                    })
+                }else{
+                    likeable.emojis[emojiIndex].count = likeable.emojis[emojiIndex].count + 1;
+                } 
+            }
             likeable.save().then(() => {
-                // The save operation is complete here
                 console.log('likeable saved');
             })
-            
         }else{
-            console.log('im in else like')
             let newLike = await Like.create({
                 user:req.user._id,
                 likeable:req.query.id,
                 onModel:req.query.type,
-                emoji:emojiType
+                emojiType:emojiType,
+                emoji:emoji
             })
             if(emojiIndex==-1){
-                console.log('im in -1')
                 await likeable.emojis.push({
                     type : emojiType,
                     count : 1
                 })
             }else{
-                console.log('elsecount',likeable.emojis[emojiIndex].count)
                 likeable.emojis[emojiIndex].count = likeable.emojis[emojiIndex].count + 1;
-                console.log('elsecount1',likeable.emojis[emojiIndex].count)
             }
             likeable.likes.push(newLike._id)
             likeable.save().then(() => {
-                // The save operation is complete here
                 console.log('likeable saved');
             })
         }
-        console.log('likeable',likeable.emojis)
         if(req.xhr){
             return res.status(200).json({
                 message:'request successful!',
                 data: {
                     deleted:deleted,
                     id:req.query.id,
-                    likeable:likeable
+                    likeable:likeable,
+                    emojiType:emojiType,
+                    emoji:emoji,
+                    type:type
                 }
             })
         }
         req.flash('success','Like Updated')
         return res.redirect("/")
     }catch(err){
-        console.log(err)
         return res.status(500).json({
             message:'Internal Server Error'
         })

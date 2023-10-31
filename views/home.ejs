@@ -1,24 +1,31 @@
+<!-- Include CSS styles for the home page -->
 <link rel="stylesheet" href="/css/home.css">
 <link rel="stylesheet" href="/css/profile.css">
 <div id="home-container">
     <% if(locals.user){%>
+         <!-- Main container for the user's home page -->
         <div class="container" id="home-container">
             <div class="row">
                 <div class="col-12">
                     <!-- Left side -->
+
+                     <!-- First row: Create post container -->
                     <div class="row">
-                        <div class="col-6">
-                            <!-- first row -->
+                        <div class="col-12 col-md-6">
+                            
+                            <!-- First row, first column: Create post form -->
                             <div class="row divContainers" id="create-post-container">
                                 <div class="col-12">
                                     <div class="row" id="create-post">
                                         <div class="col-2">
                                             <div id="create-post-profile-image">
-                                                <% if(locals.user.avatar){%>
+                                                 
+                                                <!-- User profile image -->
+                                                <% if(user.avatar){%>
                                                 <img src="<%=locals.user.avatar %>"
                                                     alt="Profile Image">
                                                 <%}else{%>
-                                                    <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                                    <img src="/images/unknown.jpeg"
                                                     alt="Profile Image">
                                                 <%}%>
                                     
@@ -32,6 +39,8 @@
 
                                     </div>
                                     <hr />
+
+                                     <!-- Icons for updating status -->
                                     <div class="row" id="update">
                                         <div class="col-4">
                                             <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/epGAMnVkMsy.png" />
@@ -49,79 +58,196 @@
                                 </div>
                             </div>
 
-                            <!-- second row -->
-                            
-                                    <% for(post of posts){ %>
-                                        <div class="row divContainers" id="post-container">
-                                            <%- include('_post') %>
+                            <!-- Second row: User posts -->
+                                    <% for(post of posts){ 
+                                        let currentLike = post.likes.filter((item)=>{
+                                            return item.user==locals.user.id
+                                        })
+                                        console.log('currentLike',currentLike)
+                                        const monthNames = [
+                                            "January", "February", "March", "April", "May", "June",
+                                            "July", "August", "September", "October", "November", "December"
+                                        ];
+                                        const inputDate = new Date(post.createdAt);
+                                        const day = inputDate.getDate();
+                                        const month = inputDate.getMonth();
+                                        const year = inputDate.getFullYear();
+                                        const formattedDate = `${day} ${monthNames[month]}, ${year}`;
+                                        console.log("formattedDate",formattedDate);
+                                        %>
+                                        
+                                        <!-- Container for each user post -->
+                                        <div class="row divContainers" id="Post-<%= post._id %>">
+
+                                            <!-- Include post details and content -->
+                                            <%- include('_post',{
+                                                currentLike,
+                                                formattedDate
+                                            }) %>
                                         </div>
                                     <%}%>
                             </div>
                             
-                       
+                    
+                         <!-- Right side content: User profile and friends -->
+                        <div class="col-12 col-md-6">
 
-
-
-
-
-
-
-                        <!-- right side -->
-                        <div class="col-6">
+                            <!-- Container for user's friends -->
                             <div class="row divContainers" id="user-profile-friends">
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-5">
                                             <h5>Friends</h5>
-                                            <span style="color: gray;">143 friends</span>
+                                            <span style="color: gray;"><%=UserInfo.friendships.length %> friends</span>
                                         </div>
                                         <div class="col-5 offset-2">
-                                            <a href="">
+
+                                            <!-- Link to see all friends -->
+                                            <%if(UserInfo.friendships.length>0){%>
+                                            <a href="/api/v1/users/getAllFriends/<%=UserInfo._id%>">
                                                 See All Friends
                                             </a>
+                                            <%}%>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Display user's friends -->
                                 <div class="col-12">
                                     <div class="row">
-                                        <% for(user of all_users){ %>
-                                            <div class="col-4">
-                                                <p>
-                                                    <a href="/users/profile/<%= user.id %>">
-                                                        <%=user.name%>
-                                                    </a>
-                                                </p>
+                                        <% if(UserInfo.friendships.length>6){%>
+                                        
+                                        <!-- Display the first 6 friends -->
+                                        <%for(let i=0;i<6;i++){ %>
+                                            <div class="col-4 user-container" id="<%=UserInfo.friendships[i]._id %>">
+                                                
+                                                <!-- Friend's profile image -->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <%if(UserInfo.friendships[i].avatar){ %>
+                                                        <img src="<%=UserInfo.friendships[i].avatar%>"/>
+                                                        <%}else{%>
+                                                        <img src="/images/unknown.jpeg"/>
+                                                        <%}%>
+                                                    </div>
+                                                </div>
+
+                                                 <!-- Friend's full name -->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h6><%=UserInfo.friendships[i].fullName %></h6>
+                                                    </div>
+                                                </div>
                                             </div>
-        
-                                            <% } %>
+
+                                        <%}%>
+
+                                        <%}else{%>
+
+                                            <!-- Display all friends -->
+                                            <%for(let i=0;i<UserInfo.friendships.length;i++){ %>
+                                                <div class="col-4 user-container" id="<%=UserInfo.friendships[i]._id %>">
+                                                    
+                                                    <!-- Friend's profile image -->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <%if(UserInfo.friendships[i].avatar){ %>
+                                                            <img src="<%=UserInfo.friendships[i].avatar%>"/>
+                                                            <%}else{%>
+                                                            <img src="/images/unknown.jpeg"/>
+                                                            <%}%>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Friend's full name -->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h6><%=UserInfo.friendships[i].fullName %></h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+    
+                                            <%}%>
+
+                                        <%}%>
+                                        
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Container for other users -->
                             <div class="row divContainers" id="user-profile-friends">
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-5">
                                             <h5>Users</h5>
-                                            <span style="color: gray;">143 Users</span>
+                                            <span style="color: gray;"><%=all_users.length %> Users</span>
                                         </div>
                                         <div class="col-5 offset-2">
-                                            <a href="">
+
+                                            <!-- Link to see all users -->
+                                            <%if(all_users.length>0){%>
+                                            <a href="/api/v1/users/getAllUsers">
                                                 See All Users
                                             </a>
+                                            <%}%>
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- Display other users -->
                                 <div class="col-12">
                                     <div class="row">
-                                        <% for(user of all_users){ %>
-                                            <div class="col-4">
-                                                <p>
-                                                    <a href="/users/profile/<%= user.id %>">
-                                                        <%=user.name%>
-                                                    </a>
-                                                </p>
+                                        <% if(all_users.length>6){%>
+                                            <!-- Display the first 6 users -->
+                                        <% for(let i=0;i<6;i++){ %>
+                                            <div class="col-4 user-container" id="<%=all_users[i]._id %>">
+                                                 
+                                                <!-- User's profile image -->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <%if(user.avatar){ %>
+                                                        <img src="<%=all_users[i].avatar%>"/>
+                                                        <%}else{%>
+                                                        <img src="/images/unknown.jpeg"/>
+                                                        <%}%>
+                                                    </div>
+                                                </div>
+
+                                                <!-- User's full name -->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <h6><%=all_users[i].fullName %></h6>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <% } %>
+                                        <%}else{%>
+
+                                            <!-- Display all users -->
+                                            <% for(user of all_users){ %>
+                                                <div class="col-4 user-container" id="<%=user._id %>">
+                                                    
+                                                    <!-- User's profile image -->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <%if(user.avatar){ %>
+                                                            <img src="<%=user.avatar%>"/>
+                                                            <%}else{%>
+                                                            <img src="/images/unknown.jpeg"/>
+                                                            <%}%>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- User's full name -->
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h6><%=user.fullName %></h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        <%}%>
                                     </div>
                                 </div>
                             </div>
@@ -133,4 +259,5 @@
         </div>
         <% } %>
 </div>
+
 

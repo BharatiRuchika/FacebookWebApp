@@ -1,33 +1,70 @@
+<!-- Link to external CSS and JavaScript files for styling and interactivity -->
 <link rel="stylesheet" href="/css/profile.css">
 <script src="/js/user_profile.js"></script>
+<link rel="stylesheet" href="/css/home.css">
+
+<!-- Container for the user profile -->
 <div id="user-profile-container">
+     <!-- Container for the profile header -->
     <div id="profile-header-container" class="divContainers">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <!-- Profile Header -->
                     <div class="profile-header">
+                        <!-- User profile image container -->
                         <div id="user-profile-image-container">
-                            <%if(user.avatar){%>
-                            <img src="<%=user.avatar %>"
+                            <!-- Display user's profile image if available, otherwise display a default image -->
+                            <%if(userInfo.avatar){%>
+                            <img src="<%=userInfo.avatar %>"
                                 alt="Profile Image"/>
                             <%}else{%>
-                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                <img src="/images/unknown.jpeg"
                                 alt="Profile Image"/>
                             <%}%>
+
+                            <!-- Edit icon for the user to update their profile picture -->
+                            <%if(locals.user.id==userInfo.id){ %>
                                 <div class="edit-icon">
-                                    <i class="fas fa-edit"></i>
+                                    <a href="/api/v1/users/display-profile-picture-form"><i class="fas fa-edit"></i></a> 
                                 </div>
+                            <%}%>
                         </div>
-                        <h1 class="profile-name"><%=user.fullName %></h1>
-                        <p class="user-friends">400 friends</p>
-                        <% if(user.bio){%>
-                            <p><h4><%=user.bio %></h4></p>
+
+                        <!-- Display user's full name and friend count -->
+                        <h1 class="profile-name"><%=userInfo.fullName %></h1>
+                        <p class="user-friends"><%=userInfo.friendships.length %> friends</p>
+
+                        <!-- Display user's bio if available -->
+                        <% if(userInfo.bio){%>
+                            <p><h4><%=userInfo.bio %></h4></p>
+                        <%}%>
+
+                        <!-- Actions for adding friends and sending messages -->
+                        <%if(locals.user.id!=userInfo.id){ %>
+                            <!-- Button to add a friend (disabled if already friends) -->
+                            <% if(isFriend){%>
+                                <button class="add-friend-button" disabled>Friends</button>
+                            <%}else{%>
+                                 <!-- Display a "Pending" button if a friend request is pending -->
+                                <%if(friendshipsStatus!=null){%>
+                                    <%if(friendshipsStatus.status=='pending' || friendshipsStatus.status=='rejected'){ %>
+                                        <button class="add-friend-button" disabled>Pending</button>
+                                    <%}%>
+                                <%}else{%>
+                                    <!-- Button to add a friend (with an "Add Friend" label) -->
+                                    <button class="add-friend-button" data-click='false' id="<%=userInfo.id %>">Add Friend</button>
+                                <%}%>
+                            <%}%>
+                            <!-- Button to initiate a conversation -->
+                            <a class="toggle-noty" href="/api/v1/message/display-message/<%=userInfo.id%>"><button class="add-message-button" data-click='false' id="conversation-<%=userInfo.id %>">Message</button></a> 
                         <%}%>
                     </div>
                     <hr />
                 </div>
             </div>
+
+            <!-- Navigation bar for profile sections -->
             <div class="row">
                 <div class="col-12 navbar-container">
                     <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
@@ -35,11 +72,12 @@
                         aria-label="Toggle navigation">
                         <i class="fas fa-bars facebook-icons"></i>
                     </button>
-
+                    <!-- Navigation bar for larger screens -->
                     <!-- All Icons (visible on larger screens) -->
                     <div class="d-none d-lg-block">
                         <nav class="navbar navbar-expand-lg user-profile-navbar">
                             <ul class="navbar-nav">
+                                <!-- Links to different profile sections -->
                                 <li class="nav-item" onclick="changeBorderColor(this)">
                                     <a class="nav-link" href="#">Posts</a>
                                 </li>
@@ -64,8 +102,11 @@
                             </ul>
                         </nav>
                     </div>
+
+                    <!-- Collapsible navigation bar for smaller screens -->
                     <div class="collapse navbar-collapse" id="navbarProfileNav">
                         <ul class="navbar-nav">
+                            <!-- Links to different profile sections -->
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Posts</a>
                             </li>
@@ -95,64 +136,73 @@
     </div>
 
 
-    
+        <!-- Container for the user profile details -->
     <div class="container" id="user-profile-details">
         <div class="row">
             <div class="col-12 col-md-6">
+                <!-- Container for editing profile details -->
                 <div class="row divContainers" id="Edit-Details">
                     <div class="col-12">
                         <div class="row">
                             <div class="col-12">
                                 <h4>Intro</h4>
-                                <% if(user.bio){%>
-                                    <a href="/api/v1/users/bio"> <button>Edit Bio</button></a>
-                                <%}else{%>
-                                    <a href="/api/v1/users/bio"> <button>Add Bio</button></a>
+                                <!-- Link to edit or add a bio (if it's the user's own profile) -->
+                                <%if(locals.user.id==userInfo.id){ %>
+                                    <% if(userInfo.bio){%>
+                                        <a href="/api/v1/users/bio"><button>Edit Bio</button></a>
+                                    <%}else{%>
+                                        <a href="/api/v1/users/bio"><button>Add Bio</button></a>
+                                    <%}%>
                                 <%}%>
-                                
                             </div>
-                            <%if(user.college){%>
+
+                            <!-- Display college, city, and relationship status (if available) -->
+                            <%if(userInfo.college){%>
                             <div class="col-12">
                                 <div class="row mt-3">
                                     <div class="col-1">
                                         <i class="fa-solid fa-graduation-cap"></i>
                                     </div>
                                     <div class="col-11">
-                                        <span>Studied At <b><%=user.college %></b></span>
+                                        <span>Studied At <b><%=userInfo.college %></b></span>
                                     </div>
                                 </div>
                             </div>
                             <% } %>
-                            <% if(user.city){%>
+                            <% if(userInfo.city){%>
                             <div class="col-12">
                                 <div class="row mt-3">
                                     <div class="col-1">
                                         <i class="fa-solid fa-house"></i>
                                     </div>
                                     <div class="col-11">
-                                        <span> Lives in <b><%=user.city %></b></span>
+                                        <span> Lives in <b><%=userInfo.city %></b></span>
                                     </div>
                                 </div>
                             </div>
                             <%}%>
-                            <% if(user.relationshipStatus){%>
+                            <% if(userInfo.relationshipStatus){%>
                             <div class="col-12">
                                 <div class="row mt-3">
                                     <div class="col-1">
                                         <i class="fa-solid fa-heart"></i>
                                     </div>
                                     <div class="col-11">
-                                        <span> <%=user.relationshipStatus %></span>
+                                        <span> <%=userInfo.relationshipStatus %></span>
                                     </div>
                                 </div>
                             </div>
                             <%}%>
+                            <%if(locals.user.id==userInfo.id){%>
                             <div class="col-12 mt-3">
                                 <a href="/api/v1/users/edit"><button>Edit Details</button></a>
                             </div>
+                            <%}%>
                         </div>
                     </div>
                 </div>
+
+                <!-- display loggeds in user all photoes -->
                 <div class="row divContainers" id="user-profile-photoes">
                     <div class="col-12">
                         <div class="row">
@@ -160,40 +210,100 @@
                                 <h5>Photos</h5>
                             </div>
                             <div class="col-5 offset-2">
-                                <a href="">
+                                <a href="/api/v1/users/getAllPost/<%=userInfo._id%>">
                                     See All Photos
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- display logged in user all friends -->
                 <div class="row divContainers" id="user-profile-friends">
                     <div class="col-12">
                         <div class="row">
                             <div class="col-5">
                                 <h5>Friends</h5>
-                                <span style="color: gray;">143 friends</span>
+                                <span style="color: gray;"><%=userInfo.friendships.length %> friends</span>
                             </div>
                             <div class="col-5 offset-2">
-                                <a href="">
+                                <% if(userInfo.friendships.length>6){%>
+                                <a href="/api/v1/users/getAllFriends/<%=userInfo._id %>">
                                     See All Friends
                                 </a>
+                                <%}%>
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-12">
+                        <div class="row">
+                            <!-- display first 6 friends -->
+                            <% if(userInfo.friendships.length>6){%>
+                                <%for(let i=0;i<6;i++){ %>
+                                    <div class="col-4 user-container" id="<%=userInfo.friendships[i]._id %>">
+                                        
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <%if(userInfo.friendships[i].avatar){ %>
+                                                <img src="<%=userInfo.friendships[i].avatar%>"/>
+                                                <%}else{%>
+                                                <img src="/images/unknown.jpeg"/>
+                                                <%}%>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h6><%=userInfo.friendships[i].fullName %></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <%}%>
+
+                                <%}else{%>
+                                    <!-- dispaly all friends -->
+                                    <%for(let i=0;i<userInfo.friendships.length;i++){ %>
+                                        <div class="col-4 user-container" id="<%=userInfo.friendships[i]._id %>">
+                                            
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <%if(userInfo.friendships[i].avatar){ %>
+                                                    <img src="<%=userInfo.friendships[i].avatar%>"/>
+                                                    <%}else{%>
+                                                    <img src="/images/unknown.jpeg"/>
+                                                    <%}%>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6><%=userInfo.friendships[i].fullName %></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <%}%>
+
+                                <%}%>
+                        </div>
+                    </div>
+
+                    
                 </div>
             </div>
             <div class="col-12 col-md-6">
+                <!-- if user is logged in user then display create post container -->
+                <%if(locals.user.id==userInfo.id){ %>
                 <div class="row divContainers" id="create-post-container">
                     <div class="col-12">
-                        <div class="row">
+                        <div class="row" id="create-post">
                             <div class="col-2">
                                 <div id="create-post-profile-image">
-                                    <%if(user.avatar){%>
-                                    <img src="<%=user.avatar %>"
+                                    <%if(userInfo.avatar){%>
+                                    <img src="<%=userInfo.avatar %>"
                                         alt="Profile Image">
                                     <%}else{%>
-                                        <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                        <img src="/images/unknown.jpeg"
                                         alt="Profile Image">
                                     <%}%>
                                 </div>
@@ -205,6 +315,7 @@
                             </div>
                         </div>
                         <hr />
+                       
                         <div class="row" id="update">
                             <div class="col-4">
                                 <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yE/r/epGAMnVkMsy.png" />
@@ -235,22 +346,43 @@
                                 </div> -->
                             </div>
                         </div>
-
+                        
                     </div>
 
                 </div>
-                <!-- <h5>Posts</h5> -->
-                <% if(user.posts.length>0){%>
+                <%}%>
+                <!-- user Posts -->
+                <% if(userInfo.posts.length>0){%>
+                    <% for(post of userInfo.posts){
+                        console.log('post',post)
+                        let currentLike = post.likes.filter((item)=>{
+                            return item.user.id==locals.user.id
+                        })
+                        console.log('currentLike',currentLike)
+                        const monthNames = [
+"January", "February", "March", "April", "May", "June",
+"July", "August", "September", "October", "November", "December"
+];
+                        const inputDate = new Date(post.createdAt);
+                        const day = inputDate.getDate();
+                        const month = inputDate.getMonth();
+                        const year = inputDate.getFullYear();
+                        const formattedDate = `${day} ${monthNames[month]}, ${year}`;
+                        console.log("formattedDate",formattedDate); 
+                    %>
 
-                    <% for(post of user.posts){ %>
                         <div class="row divContainers" id="post-container">
-                            <%- include('_post') %>
+                            <%- include('_post',{
+                                formattedDate:formattedDate,
+                                currentLike:currentLike
+                            }) %>
                         </div>
                     <%}%>
-               
                 <%}%>
             </div>
         </div>
 
     </div>
 </div>
+
+

@@ -1,0 +1,126 @@
+<!-- Link to an external CSS file for styling -->
+<link rel="stylesheet" href="/css/message.css">
+
+<!-- Row for the messenger container -->
+<div class="row">
+    <div class="offset-3 col-6" id="messenger" >
+        <!-- Messenger header -->
+        <div class="row" id="header">
+            <!-- Container for recipient's profile image -->
+            <div class="col-2" id="header-image-container">
+                <!-- Display recipient's avatar image if available, otherwise use a default image -->
+                <%if(recipientUserInfo.avatar){ %>
+                <img src="<%=recipientUserInfo.avatar%>"/>
+                <%}else{%>
+                    <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"/>
+                <%}%>
+            </div>
+            <!-- Container for recipient's name -->
+            <div class="col-6">
+                <h5><%=recipientUserInfo.fullName %></h5>
+            </div>
+            <!-- Container for call and video call buttons -->
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <!-- Icons for call and video call options -->
+                            <div class="col-3">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="col-3">
+                                <i class="fa-solid fa-video"></i>
+                            </div>
+                            <div class="col-3">
+                                <i class="fa-solid fa-window-minimize"></i>
+                            </div>
+                            <div class="col-3">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <hr/>
+
+       <!-- Messenger body -->
+       <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="offset-3 col-6" id="messenger-body">
+                        <div class="row">
+                             <!-- Container for recipient's profile image -->
+                            <div class="col-12 messenger-body-img-container">
+                                <!-- Display recipient's avatar image if available, otherwise use a default image -->
+                                <%if(recipientUserInfo.avatar){ %>
+                                    <img src="<%=recipientUserInfo.avatar %>"/>
+                                <%}else{%>
+                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"/>
+                                <% } %>
+                            </div>
+                            <!-- Container for recipient's name -->
+                            <div class="col-12 messenger-body-img-container">
+                               <h6><%=recipientUserInfo.fullName %></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+
+        <!-- Container for displaying messages -->
+       <div class="row">
+        <div class="col-12">
+            <div id="message-container-<%=recipientUserInfo._id %>" class="message-container">
+                <!-- Iterate through messages -->
+                <%for(message of messages){%>
+                     <!-- Check if the message sender is the current user -->
+                    <% if(message.sender.id==locals.user.id){%>
+                        <!-- Display user's sent message on the right -->
+                        <div class="message float-right">
+                            <%=message.text %>
+                        </div>
+                    <%}else{%>
+                        <!-- Display recipient's received message on the left -->
+                        <div class="message float-left">
+                             <!-- Display recipient's avatar image if available, otherwise use a default image -->
+                            <%if(message.sender.avatar){ %>
+                                <img src="http://localhost:8000<%=message.recipient.avatar %>">
+                            <%}else{%>
+                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg">
+                            <%}%>
+                            <%=message.text %>
+                        </div>
+                     <%}%>
+                <%}%>
+                
+            </div>
+        </div>
+       </div>
+
+ <!-- Row for the message input form -->
+       <div class="row mt-2">
+         <!-- Form for sending a new message -->
+        <form id="createMessageForm" method="post">
+        <div class="col-12">
+            <div class="row">
+                <div class="offset-3 col-6">
+                    <!-- Input field for composing a new message -->
+                    <input type="text" id="inputField" name="messageText" placeholder="Aa" oninput="checkInput()"/>
+                </div>
+                <!-- Hidden input for recipient's user ID -->
+                <input type="hidden" id="recipientId" name="recipientId" value="<%=recipientUserInfo._id %>" />
+                <div class="col-1">
+                    <!-- Button to submit the new message -->
+                   <button id="submitButton" disabled type="submit"><i class="fa-solid fa-paper-plane"></i></button> 
+                </div>
+            </div>
+        </div>
+    </form>
+       </div>
+    </div>
+</div>
+
+<!-- Link to an external JavaScript file for additional functionality -->
+<script src="/js/message.js"></script>

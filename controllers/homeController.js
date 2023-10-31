@@ -2,74 +2,54 @@ const Post = require('../models/post')
 const User = require('../models/users')
 const Comment = require('../models/comment')
 const Like = require('../models/like')
-module.exports.home = async function(req,res){
-    console.log('im in home')
-    // console.log('user',locals.user)
-    try{
-        let posts = await Post.find({}).sort('-createdAt').populate('user').populate({
-            path:'comments',
-            populate: [
-                { path: 'user' },
-                { path: 'likes' }
-              ]
-        }).populate('likes')
-        posts.forEach((post) => {
-            post.liked = false
-        })
-
-        posts.forEach((post) => {
-            post.comments.forEach((comment)=>{
-                comment.liked = false
-            })
-        })
-        
-        posts.forEach((post) => {
-            post.likes.forEach((post_like)=>{
-                if(post_like.user==req.user.id){
-                    console.log('true')
-                    post.liked = true
-                }
-            })
+const Friendship = require('../models/friendship')
+const Conversation = require('../models/conversation')
+module.exports.home = async function (req, res) {
+  let user = req.user
+  if (req.isAuthenticated()) {
+    console.log('authenticated')
+    try {
+      let UserInfo = await User.findById(user.id)
+        .populate({
+          path: 'posts',
+          options: { sort: { createdAt: -1 } },
+          populate: [
+            {
+              path: 'comments likes',
+              options: { sort: { createdAt: -1 } },
+              populate: {
+                path: 'user',
+              },
+            },
+            {
+              path: 'user',
+            },
+          ],
+        }).populate({
+          path: 'friendships',
+          options: { sort: { createdAt: -1 } },
         });
-        posts.forEach((post) => {
-            console.log('post.comments', post.comments);
-            post.comments.forEach((comment)=>{
-                comment.likes.forEach((like)=>{
-                    console.log('im in like')
-                    if(like.user==req.user.id){
-                        console.log('true')
-                        comment.liked = true
-                    }
-                })
-            })
-        });
-        posts.forEach((post) => {
-            post.comments.forEach((comment)=>{
-                console.log('liked',comment.liked)
-            })
-        })
-        console.log('posts',posts)
-        let users = await User.find({})
-        return res.render('home',{
-            title:"Home",
-            posts:posts,
-            all_users:users,
-            curr_user:req.user.id
-        })
-    }catch(err){
-        console.log('err',err)
+      let posts = await Post.find({}).sort('-createdAt').populate('user').populate({
+        path: 'comments',
+        populate: [
+          { path: 'user' },
+          { path: 'likes' }
+        ]
+      }).populate('likes')
+      let users = await User.find({ _id: { $ne: req.user.id } })
+      return res.render('home', {
+        title: "Home",
+        UserInfo: UserInfo,
+        all_users: users,
+        posts: posts
+      })
+    } catch (err) {
+      console.log('err', err)
     }
-    // return res.end('<h1>Express is up for codeil</h1>')
+  } else {
+    return res.render('user_sign_in', {
+      title: "Sign in",
+    })
+  }
 }
 
-module.exports.Home = async function(req,res){
-    try{
-        return res.render('Home1',{
-            title:"Home",
-            // posts:posts,
-            // all_users:users
-        })
-    }catch(err){
-        console.log('err',err)
-    }
-}

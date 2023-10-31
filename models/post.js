@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const multer = require('multer')
 const path = require('path')
 const AVATAR_PATH = path.join('/uploads/posts/images')
+const Comment = require('../models/comment')
+const Like = require('../models/like')
 const postSchema = new mongoose.Schema({
     content:{
         type:String,
@@ -27,7 +29,6 @@ const postSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Comment'
     }],
-
     likes:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Like'
@@ -37,6 +38,16 @@ const postSchema = new mongoose.Schema({
 })
 
 
+postSchema.pre('deleteOne',{ query: true }, async function(next) {
+    console.log('im in post removve')
+    const query = this.getFilter();
+    const postId = query._id;
+    console.log("postId",postId)
+    await Like.deleteMany({likeable:postId})
+    const deletedCommentIds = (await Comment.find({ post: postId }, '_id')).map(comment => comment._id);
+    await Comment.deleteMany({ post: postId });
+    await Like.deleteMany({ likeable: { $in: deletedCommentIds } });
+  });
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

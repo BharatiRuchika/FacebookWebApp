@@ -1,0 +1,89 @@
+#header-image-container img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+#header{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    /* padding: 2px; */
+}
+ 
+
+/* #header:first-child{
+    border-bottom: 1px solid black;
+} */
+
+#messenger{
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    padding: 10px;
+}
+
+.messenger-body-img-container{
+    justify-content: center;
+    align-items: center;
+    display: flex
+}
+
+input{
+    width: 100%;
+}
+
+#createMessageForm input{
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(214, 217, 220);
+    padding: 5px;
+}
+#createMessageForm button{
+    border: none;
+    background: none;
+}
+#createMessageForm i{
+    font-size: 1.5rem;
+}
+
+#messenger{
+    /* height: 70vh;
+    overflow: auto;  */
+}
+/* #createMessageForm{
+    position: absolute;
+    bottom: 0; 
+} */
+
+.message-container {
+    width: 100%; /* Or specify a fixed width */
+    border: 1px solid #ccc;
+    overflow: auto; /* Clear floated elements */
+    height:50vh;
+}
+
+/* Style for left-aligned messages */
+.message.float-left {
+    background-color: #E0E0E0;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    float: left;
+    clear: both; /* Clear float to prevent wrapping around the message */
+}
+
+/* Style for right-aligned messages */
+.message.float-right {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    float: right;
+    clear: both; /* Clear float to prevent wrapping around the message */
+}
+
+.message-container img{
+    width: 50px;
+    height:50px;
+    border-radius: 50%;
+}

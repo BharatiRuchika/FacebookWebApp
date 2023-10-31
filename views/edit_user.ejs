@@ -1,26 +1,44 @@
+<!-- Link to an external CSS file for styling -->
 <link rel="stylesheet" href="/css/sign_up.css">
+
+<!-- Container for the sign-up form, with top margin -->
 <div class="container mt-5">
+
+    <!-- Row to organize content within the container -->
     <div class="row">
+         <!-- A column with offset to center the content on medium-sized screens -->
         <div class="col-md-6 offset-md-3">
+            <!-- A card element to create a bordered box for the form -->
             <div class="card">
+                <!-- Card body containing the form elements -->
                 <div class="card-body">
+                    <!-- Facebook logo section -->
                     <div class="sign-up-facebook-logo mb-3">
+                        <!-- Displaying the Facebook logo image -->
                         <img src="https://png.pngtree.com/png-clipart/20200721/original/pngtree-facebook-name-with-back-shadow-png-image_4861810.jpg"/> 
                      </div>
                      
+                     <!-- User information update form -->
                     <form action="/api/v1/users/update-user" method="POST">
+                         <!-- Input field for HomeTown/City -->
                         <div class="mb-3">
                             <label for="city" class="form-label">HomeTown/City</label>
+                    <!-- Input field for city with a placeholder and a value attribute -->
                             <input type="text" class="form-control" id="city" value="<%=user.city %>" name="city" placeholder="Enter your city" >
                         </div>
+
+                        <!-- Input field for University/College -->
                         <div class="mb-3">
                             <label for="college" class="form-label">University/College</label>
+                            <!-- Input field for college/university with a placeholder and a value attribute -->
                             <input type="text" class="form-control" id="college" value="<%=user.college %>" name="college" placeholder="Enter your college/university name">
                         </div>
+
+                        <!-- Dropdown for Relationship Status -->
                         <div class="mb-3">
-                            
                             <label for="relationshipStatus" class="form-label">Relationship Status</label>
                         <select class="form-control" value="<%=user.relationshipStatus %>" id="relationshipStatus" name="relationshipStatus">
+                            <!-- Options for different relationship statuses with conditional selection -->
                             <option value="">Select relationship status</option>
                             <option value="single" <%= user.relationshipStatus === 'single' ? 'selected' : '' %>>Single</option>
                             <option value="in_a_relationship" <%= user.relationshipStatus === 'in_a_relationship' ? 'selected' : '' %>>In a Relationship</option>
@@ -30,14 +48,16 @@
                             <option value="other" <%= user.relationshipStatus === 'other' ? 'selected' : '' %>>Other</option>
                         </select>
                         </div>
+
+                        <!-- Input field for Date Of Birth -->
                         <div class="mb-3">
                             <label for="dob" class="form-label">Date Of Birth</label>
+
+                            <!-- Input field for date of birth with a value attribute -->
                             <input type="date" value="<%= (user.dateOfBirth ? user.dateOfBirth.toISOString().split('T')[0] : '') %>" class="form-control" id="dob" name="dateOfBirth" placeholder="Enter your date of birth">
                         </div>
-                        <!-- <div class="mb-3">
-                            <label for="profilePic" class="profile-pic-label">Upload Profile Picture</label>
-                    <input type="file" id="profilePic" name="avatar" name="profilePic" class="profile-pic-upload">
-                        </div> -->
+                        
+                         <!-- Button to submit the form -->
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>

@@ -19,7 +19,6 @@ const userSchema = mongoose.Schema({
     },
     dateOfBirth:{
         type:Date,
-        required:true
     },
     city:{
         type:String
@@ -42,7 +41,7 @@ const userSchema = mongoose.Schema({
     }],
     friendships:[{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Friendship'
+        ref:'User'
     }]
 },{
     timestamps:true

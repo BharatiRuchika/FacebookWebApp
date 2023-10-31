@@ -1,37 +1,45 @@
-
+<!-- Link to an external CSS file for styling -->
 <link rel="stylesheet" href="/css/profile.css">
+
+<!-- Container for the profile picture update form -->
 <div class="container mt-5">
+
+    <!-- Row to center the form within the container -->
         <div class="row justify-content-center">
+
+            <!-- Column for the main content (form) -->
             <div class="col-md-6">
+                <!-- Card element to create a bordered box for the form -->
                 <div class="card">
+                    <!-- Card header with a centered title -->
                     <div class="card-header text-center">
                         <h4>Update Profile Picture</h4>
                     </div>
                     <div class="card-body">
+                        <!-- Form for updating the profile picture -->
                         <form action="/api/v1/users/updateProfile" method="post" enctype="multipart/form-data">
+                            <!-- Container for displaying the current user profile image -->
                             <div class="text-center mb-4" id="user-profile-image-container">
+                                <!-- Check if the user has an existing avatar; if so, display it, otherwise, display a default image -->
                                 <% if(user.avatar){%>
                                     <img src="<%=user.avatar %>"
                                  alt="User Profile Picture" class="img-thumbnail"
                                     id="profile-image"/>
                                 <%}else{%>
-                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"
+                                <img src="/images/unknown.jpeg"
                                  alt="User Profile Picture" class="img-thumbnail"
                                     id="profile-image"/>
                                 <% }%>
                             </div>
+
+                            <!-- Form input for selecting a new profile picture -->
                             <div class="form-group">
-
-                                <!-- <div class="form-group" id="create-post-img-container">
-                                    <label for="imageUpload">Upload Image</label>
-                                    <input type="file" class="form-control-file" id="imageUpload" name="avatar">
-                                </div> -->
-
-
                                 <label for="profile-picture" class="font-weight-bold">Select a new profile picture</label>
                                 <input type="file" class="form-control-file" id="profile-picture" name="avatar"
                                     accept="image/*">
                             </div>
+
+                            <!-- Button to submit the form for picture upload -->
                             <div class="form-group text-center mt-4">
                                 <button type="submit" class="btn btn-primary">Upload Picture</button>
                             </div>
