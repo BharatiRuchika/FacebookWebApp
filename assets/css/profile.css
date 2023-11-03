@@ -190,6 +190,10 @@
     background-color: #0056b3; /* Darker blue color on hover */
 }
 
+.user-container,.all-user-container,.friend-container{
+    border: 1px solid rgb(210, 208, 208);
+}
+
 
 
 

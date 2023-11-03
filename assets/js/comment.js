@@ -1,19 +1,15 @@
 class PostComments{
     // Constructor for PostComments class
     constructor(commentForm){
-        console.log('commentForm',commentForm)
         this.Form = commentForm
         this.createComment()
     }
     createComment(){
         // Method to handle comment creation
-        console.log('im in create comment')
         let pSelf = this
         $(this.Form).submit(function(e){
             e.preventDefault()
-            console.log('form is submitted')
             let self = this
-            console.log('serialize',$(self).serialize())
             // Send a POST request to create a new comment
             $.ajax({
                 type:'post',
@@ -40,7 +36,6 @@ class PostComments{
                     }).show()              
                    
                     $(`#comment-content-${data.data.postId}`).val('')
-                    console.log('status',$(`#comments-status`))
                     // $(`#comments-status`).text('')
                     $('#comments-status').html('&nbsp;');
                 },error:function(error){
@@ -62,7 +57,7 @@ class PostComments{
                 <div class="col-2 profile-pic">
                   
                     <img class="profileImage"
-                    src="${comment.user.avatar ? `${comment.user.avatar}` : '/images/unknown.jpeg'}" />
+                    src="${comment.user.avatar.url}" />
                         
                 </div>
     
@@ -184,10 +179,7 @@ class PostComments{
                     type:'success',
                     layout:'topRight',
                     timeout:1500
-                }).show()
-                // id="comment-container-<%=post._id %>" data-comment-count="<%post.comments.length %>"
-               
-                
+                }).show()    
             },error:function(err){
                 console.log("err",err.responseText)
             }

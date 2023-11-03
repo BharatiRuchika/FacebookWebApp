@@ -36,6 +36,8 @@ module.exports.home = async function (req, res) {
           { path: 'likes' }
         ]
       }).populate('likes')
+
+      console.log('posts',posts)
       let users = await User.find({ _id: { $ne: req.user.id } })
       return res.render('home', {
         title: "Home",

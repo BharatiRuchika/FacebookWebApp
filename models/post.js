@@ -7,14 +7,18 @@ const Like = require('../models/like')
 const postSchema = new mongoose.Schema({
     content:{
         type:String,
-        required:true
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
     postImage:{
-        type:String
+        public_id: {
+            type: String,
+        },
+        url: {
+            type: String,
+        }
     },
     emojis: [{
         type: {

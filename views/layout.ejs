@@ -27,17 +27,10 @@
 </head>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
-
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
 <link rel="stylesheet" href="/css/layout.css">
 </head>
-
 <body>
     <!-- Include header -->
     <%- include('_header') %>
@@ -87,10 +80,9 @@
                     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 <script src="/js/chat_engine.js"></script>
                 <%if(locals.user){console.log('locals.user',locals.user.id,locals.user._id)%>
-                    <script>
-                            new ChatEngine('user-chat-box', '<%=locals.user.id %>')
-                    </script>
-                    <%}%>
+                <script>
+                    new ChatEngine('user-chat-box', '<%=locals.user.id %>')
+                </script>
+                <%}%>
 </body>
-
 </html>

@@ -10,6 +10,6 @@ module.exports.setFlash = function(req,res,next){
 
 // Middleware for common data handling
 module.exports.commomData = function(req,res,next){
-    console.log('im in common data')
+    // console.log('im in common data')
     next()// Proceed to the next middleware
 }

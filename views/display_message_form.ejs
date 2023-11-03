@@ -9,10 +9,8 @@
             <!-- Container for recipient's profile image -->
             <div class="col-2" id="header-image-container">
                 <!-- Display recipient's avatar image if available, otherwise use a default image -->
-                <%if(recipientUserInfo.avatar){ %>
-                <img src="<%=recipientUserInfo.avatar%>"/>
-                <%}else{%>
-                    <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"/>
+                <%if(recipientUserInfo.avatar.url){ %>
+                <img src="<%=recipientUserInfo.avatar.url%>"/>
                 <%}%>
             </div>
             <!-- Container for recipient's name -->
@@ -53,11 +51,9 @@
                              <!-- Container for recipient's profile image -->
                             <div class="col-12 messenger-body-img-container">
                                 <!-- Display recipient's avatar image if available, otherwise use a default image -->
-                                <%if(recipientUserInfo.avatar){ %>
-                                    <img src="<%=recipientUserInfo.avatar %>"/>
-                                <%}else{%>
-                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg"/>
-                                <% } %>
+                                <%if(recipientUserInfo.avatar.url){ %>
+                                    <img src="<%=recipientUserInfo.avatar.url %>"/>
+                                <%}%>
                             </div>
                             <!-- Container for recipient's name -->
                             <div class="col-12 messenger-body-img-container">
@@ -85,10 +81,8 @@
                         <!-- Display recipient's received message on the left -->
                         <div class="message float-left">
                              <!-- Display recipient's avatar image if available, otherwise use a default image -->
-                            <%if(message.sender.avatar){ %>
-                                <img src="http://localhost:8000<%=message.recipient.avatar %>">
-                            <%}else{%>
-                                <img src="https://imgv3.fotor.com/images/gallery/AI-3D-Female-Profile-Picture.jpg">
+                            <%if(message.sender.avatar.url){ %>
+                                <img src="<%=message.sender.avatar.url %>">
                             <%}%>
                             <%=message.text %>
                         </div>

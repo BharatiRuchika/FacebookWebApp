@@ -34,7 +34,6 @@ module.exports.createMessage = async function(req,res){
         })
     }
     }catch(error){
-        console.log('error',error)
         return res.status(401).json({
             message:'Internal Server Error',
             success:false
@@ -81,7 +80,6 @@ module.exports.displayMessage = async function(req,res){
   try{
       let id = req.params.id
       let conversation = await Conversation.findOne({sender:id,recipient:req.user.id})
-      console.log('displayConverstaion',conversation)
       var isConversationStarted = true
       var alreadySeen = false
       if(conversation==null){
@@ -116,7 +114,6 @@ module.exports.displayMessage = async function(req,res){
 module.exports.openMessages = async function(req,res) {
   try{
     let id = req.params.id
-    console.log('id',id)
     let recipientUserInfo = await User.findById(id)
           .populate({
             path: 'posts', // Populate the user's posts

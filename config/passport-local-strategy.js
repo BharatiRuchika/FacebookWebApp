@@ -9,14 +9,16 @@ passport.use(new LocalStrategy({
 },
 function(email,password,done){
      // Check if a user with the provided email exists and the password matches
-    User.findOne({email:email}).then((user)=>{
-        if(!user || user.password!=password){
-            console.log('Invalid username/password')
+    User.findOne({email:email}).then(async(user)=>{
+        if(!user){
             return done(null,false)   
+        }
+        const isPasswordMatch = await user.comparePassword(password)
+        if(!isPasswordMatch){
+            return done(null,false) 
         }
         return done(null,user)    // Authentication successful
     }).catch((error)=>{
-        console.log('error in finding user -> Passport')
         return done(error)
     })
 }
@@ -30,7 +32,6 @@ passport.serializeUser(function(user,done){
 // Deserialize user from the session
 passport.deserializeUser(function(id,done){
     User.findById(id).then((user)=>{
-        console.log('error in finding user')
         return done(null,user)
     }).catch((error)=>{
         console.log('error in finding user')
@@ -65,13 +66,12 @@ passport.setAuthenticatedUser = async function(req,res,next){
             ]
           })
           .populate('recipient')
-          .populate('sender');
+          .populate('sender')
+          .sort({ createdAt: -1 }); ;
        
  // Check if there are conversations that are not seen by the recipient
-        let isConversationSeen = await Conversation.find({recipient:req.user.id,isSeenByRecipient:false})
-
+        let isConversationSeen = await Conversation.find({recipient:req.user.id,isSeenByRecipient:false,})       
         let isConversationSeenCount = isConversationSeen.length
-        console.log('isConversationSeen',isConversationSeen)
         res.locals.pendingFriendRequests = pendingFriendRequests;
         res.locals.conversations = conversations
         res.locals.isConversationSeenCount = isConversationSeenCount

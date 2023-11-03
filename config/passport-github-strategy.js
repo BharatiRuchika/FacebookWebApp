@@ -2,7 +2,7 @@ const GitHubStrategy = require('passport-github').Strategy;
 const User = require('../models/users')
 const passport = require('passport')
 const crypto = require('crypto')
-
+const cloudinary = require("cloudinary");
 // Configure the GitHub authentication strategy
 passport.use(new GitHubStrategy({
     clientID: 'cee1ba1361c184767359',    // GitHub OAuth client ID
@@ -15,17 +15,27 @@ function(accessToken, refreshToken, profile, done) {
     // Callback function when GitHub authentication is successful
 
     // Log the user's GitHub profile email
-    User.findOne({email:profile.emails[0].value}).exec().then((user)=>{
+    User.findOne({email:profile.emails[0].value}).exec().then(async(user)=>{
         if(user){
              // If the user already exists, return the user to Passport
             return done(null,user)
         }else{
+
+            const result = await cloudinary.v2.uploader.upload(profile._json.avatar_url, {
+                folder: "avatars",
+                width: 150,
+                crop: "scale"
+            })
+            console.log('result',result)
             // If the user doesn't exist, create a new user using GitHub profile data
             User.create({
                 fullName:profile.displayName,
                 email:profile.emails[0].value,
                 password:crypto.randomBytes(20).toString('hex'),
-                avatar:profile._json.avatar_url
+                avatar:{
+                    public_id:result.public_id,
+                    url:result.secure_url
+                },
             }).then((user)=>{
                  // Return the newly created user to Passport
                 return done(null,user)

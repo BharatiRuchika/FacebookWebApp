@@ -11,6 +11,8 @@ const mongoose = require('mongoose')
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
+const bodyParser = require('body-parser');
+const base64Img = require('base64-img');
 app.use('/uploads',express.static(__dirname + '/uploads'))
 const passportLocal = require('./config/passport-local-strategy');
 const passportGoogle = require('./config/passport-google-oauth2-strategy')
@@ -18,28 +20,35 @@ const passportGithub = require('./config/passport-github-strategy')
 const passportFacebook = require('./config/passport-facebook-strategy')
 const chatServer = require('http').Server(app)
 const chatSockets = require('./config/chat_sockets').chatSockets(chatServer)
+var cloudinary = require("cloudinary");
 chatServer.listen(5001)
 console.log('chat server is listening on port 5001')
 const flash = require('connect-flash')
 const custumMware = require('./config/middleware')
 const Data = require('./config/middleware')
-app.use(express.urlencoded())
+
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 app.use(expressLayouts);
 app.set('layout extractStyles',true)
 app.set('layout extractScripts',true)
-app.use(express.static(env.asset_path))
+app.use(express.static('./assets'))
 app.use('/uploads',express.static(__dirname + '/uploads'))
 app.set('view engine','ejs')
 app.set('views','./views')
-
+cloudinary.config({
+    cloud_name: 'daeuzh0zl',
+    api_key: '759428944124147',
+    api_secret: 'zIeuNdSoPbJqTry1SOS_qxWqYFU'
+  })
 const mongoStore = new MongoStore({
     mongooseConnection: mongoose.connection,
     collection: 'Facebook',
 });
 app.use(session({
     name: 'facebook',
-    secret: env.session_cookie_key,
+    secret: 'blahsomething',
     saveUninitialized: false,
     resave:false,
     cookie:{

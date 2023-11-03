@@ -19,19 +19,12 @@ function handleFriendRequest(senderId,targetId) {
 
 // Function to update the friend requests list
 function updateFriendRequestsList(senderUser){
-    let userAvatar = ''
-    if(senderUser.avatar){
-        console.log('im in avatar')
-        userAvatar =  `<img src='http://localhost:8000${senderUser.avatar}'/>`
-    }else{
-        console.log('im in else avatar')
-        userAvatar = `<img src="https://i.pinimg.com/736x/d0/4b/1f/d04b1f2ed3ca8ad4a302fbe9f4f5a875.jpg"/>`
-    }
+    
     // Generate HTML for a friend request entry
     return `<li id="request-${senderUser._id}">
     <div class="row modal-lists">
         <div class="col-3 modal-profile-images">
-            ${userAvatar}
+            <img src="${senderUser.avatar.url}"/>
         </div>
         <div class="col-9 modal-text">
             <div class="row">
@@ -54,12 +47,8 @@ function updateFriendRequestsList(senderUser){
 // Click event handler for deleting a friend request
 $(document).on('click','.delete-request-btn',function(){
     // Handle the click event for deleting a friend request
-    console.log('clicked')
-    console.log('this',this)
     let from_user = $(this).attr('id')
-    console.log('from_user',from_user)
     let requestCounts = parseInt($('.request-counts').attr('data-requests'))
-    console.log('requestCounts',requestCounts)
     requestCounts = requestCounts - 1
     if(requestCounts==0){
         $('.request-counts').css('display', 'none');
@@ -85,8 +74,6 @@ $(document).on('click','.delete-request-btn',function(){
 // Click event handler for confirming a friend request
 $(document).on('click', '.confirm-request-btn', function () {
     // Handle the click event for confirming a friend request
-     console.log('clicked')
-     console.log('this',this)
      let from_user = $(this).attr('id')
      let button = $(this);
      $.ajax({

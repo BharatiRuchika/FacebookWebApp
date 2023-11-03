@@ -12,7 +12,6 @@ targetElement.style.marginTop = marginTopValue + 'px';
 
 // Function to update the placeholder text of a search input based on viewport width
 function updatePlaceholderText() {
-    console.log('im here')
     const input = document.getElementById('facebook-search');
     const viewportWidth = window.innerWidth;
     // Check if the viewport width is less than or equal to 400

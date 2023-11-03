@@ -15,11 +15,8 @@
                         <!-- User profile image container -->
                         <div id="user-profile-image-container">
                             <!-- Display user's profile image if available, otherwise display a default image -->
-                            <%if(userInfo.avatar){%>
-                            <img src="<%=userInfo.avatar %>"
-                                alt="Profile Image"/>
-                            <%}else{%>
-                                <img src="/images/unknown.jpeg"
+                            <%if(userInfo.avatar.url){%>
+                            <img src="<%=userInfo.avatar.url %>"
                                 alt="Profile Image"/>
                             <%}%>
 
@@ -245,10 +242,8 @@
                                         
                                         <div class="row">
                                             <div class="col-12">
-                                                <%if(userInfo.friendships[i].avatar){ %>
-                                                <img src="<%=userInfo.friendships[i].avatar%>"/>
-                                                <%}else{%>
-                                                <img src="/images/unknown.jpeg"/>
+                                                <%if(userInfo.friendships[i].avatar.url){ %>
+                                            <img src="<%=userInfo.friendships[i].avatar.url%>"/>
                                                 <%}%>
                                             </div>
                                         </div>
@@ -268,10 +263,8 @@
                                             
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <%if(userInfo.friendships[i].avatar){ %>
-                                                    <img src="<%=userInfo.friendships[i].avatar%>"/>
-                                                    <%}else{%>
-                                                    <img src="/images/unknown.jpeg"/>
+                                                    <%if(userInfo.friendships[i].avatar.url){ %>
+                                                    <img src="<%=userInfo.friendships[i].avatar.url%>"/>
                                                     <%}%>
                                                 </div>
                                             </div>
@@ -299,11 +292,8 @@
                         <div class="row" id="create-post">
                             <div class="col-2">
                                 <div id="create-post-profile-image">
-                                    <%if(userInfo.avatar){%>
-                                    <img src="<%=userInfo.avatar %>"
-                                        alt="Profile Image">
-                                    <%}else{%>
-                                        <img src="/images/unknown.jpeg"
+                                    <%if(userInfo.avatar.url){%>
+                                    <img src="<%=userInfo.avatar.url %>"
                                         alt="Profile Image">
                                     <%}%>
                                 </div>

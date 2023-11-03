@@ -17,7 +17,10 @@ router.post('/update-bio',passport.checkAuthentication,users_api.updateBio)
 router.post('/update-user',passport.checkAuthentication,users_api.updateUser)
 router.get('/display-profile/:id',passport.checkAuthentication,users_api.displayUserProfile)
 router.get('/display-profile-picture-form',passport.checkAuthentication,users_api.display_profile_picture_form)
-router.post('/updateProfile',passport.checkAuthentication,users_api.updateProfilePicture)
+
+const storage1 = multer.memoryStorage();
+const upload1 = multer({ storage: storage1 });
+router.post('/updateProfile',passport.checkAuthentication,upload1.single('avatar'),users_api.updateProfilePicture)
 
 router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}))
 router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/users/sign-in'}),users_api.createSession)
@@ -35,14 +38,7 @@ router.get('/getAllUsers',passport.checkAuthentication,users_api.getAllUsers)
 router.post('/delete',passport.checkAuthentication,users_api.deleteItem)
 router.get('/getAllPost/:id',passport.checkAuthentication,users_api.getAllPost)
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.join(__dirname,"../../../",AVATAR_PATH))
-    },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname)
-    }
-})
+const storage =  multer.memoryStorage()
 const upload = multer({ storage: storage });
 router.post('/create-post',passport.checkAuthentication,upload.single('avatar'),users_api.createPost)
 

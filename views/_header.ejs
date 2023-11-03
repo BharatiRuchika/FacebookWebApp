@@ -73,11 +73,10 @@
                                                     <div class="col-3 modal-profile-images">
 
                                                         <!-- Display sender's profile image if available -->
-                                                        <%if(requests.from_user.avatar){%>
-                                                        <img src="<%=requests.from_user.avatar %>"/>
-                                                        <%}else{%>
-                                                            <img  src="/images/unknown.jpeg"/>
+                                                        <%if(requests.from_user.avatar.url){%>
+                                                        <img src="<%=requests.from_user.avatar.url %>"/>
                                                         <%}%>
+                                                        
                                                     </div>
                                             <div class="col-9 modal-text">
                                                 <div class="row">
@@ -136,20 +135,15 @@
                                         <li>
                                         <div class="row modal-lists">
                                             <div class="col-3 modal-profile-images">
-
-                                                <!-- Display profile image of the other user in the conversation -->
                                                 <% if(locals.user.id==conversation.sender.id){%>
-                                                    <% if(conversation.recipient.avatar){%>
-                                                        <img  src="<%=conversation.recipient.avatar %>"/>
-                                                    <%}else{%>
-                                                        <img  src="/images/unknown.jpeg"/>
-                                                    <%}%>
+                                                    <% if(conversation.recipient.avatar.url){%>
+                                                        <img  src="<%=conversation.recipient.avatar.url %>"/>
                                                     
+                                                    <%}%>
                                                 <%}else{%>
-                                                    <% if(conversation.sender.avatar){%>
-                                                        <img  src="<%=conversation.sender.avatar %>"/>
-                                                    <%}else{%>
-                                                    <img  src="/images/unknown.jpeg"/>
+                                                    <% if(conversation.sender.avatar.url){%>
+                                                        <img  src="<%=conversation.sender.avatar.url %>"/>
+                                                    
                                                     <%}%>
                                                 <%}%>
                                                 
@@ -230,11 +224,10 @@
                         <!-- user profile image displayed here -->
                     <div class="col-2 col-md-2" id="header-profile">
                         <button class="btn btn-primary  d-flex" type="button" data-bs-toggle="collapse" data-bs-target="#profileDetails" aria-expanded="false" aria-controls="profileDetails">
-                            <% if(locals.user && locals.user.avatar){%>
-                            <img src="<%=locals.user.avatar %>"/>
-                            <%}else{%>
-                                <img src="/images/unknown.jpeg"/>
+                            <% if(locals.user && locals.user.avatar.url){%>
+                            <img src="<%=locals.user.avatar.url %>"/>
                             <%}%>
+                            
                         </button>
                         
                         <!-- display profile details -->
@@ -244,11 +237,10 @@
                                 <div class="col-12">
                                     <div class="row">
                                         <div class="col-4">
-                                            <% if(locals.user && locals.user.avatar){%>
-                                            <img src="<%=locals.user.avatar %>"/>
-                                            <%}else{%>
-                                                <img src="/images/unknown.jpeg"/>
+                                            <% if(locals.user && locals.user.avatar.url){%>
+                                            <img src="<%=locals.user.avatar.url %>"/>
                                             <%}%>
+                                            
                                         </div>
                                         <div class="col-8">
                                             <h6><%=locals.user && locals.user.fullName %></h6>

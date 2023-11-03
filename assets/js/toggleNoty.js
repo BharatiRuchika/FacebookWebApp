@@ -10,7 +10,6 @@ class ToggleNoty{
     toggleNoty(){
         $(this.toggler).click(function(e){
             e.preventDefault()
-            console.log('clicked')
             let self = this
             // Send an AJAX request to the server when the notification is clicked
             $.ajax({
@@ -18,10 +17,8 @@ class ToggleNoty{
                 url:$(self).attr('href')
             }).done(function(data){
                 // Handle the response from the server
-                console.log('data',data)
                 // Check if a conversation is already started or the notification has already been seen
                 if(!data.data.isConversationStarted || data.data.alreadySeen){
-                    console.log('im here')
                 }else{
                     // Handle the case where the conversation is not started, and the notification is not seen
                     // Update the notification count

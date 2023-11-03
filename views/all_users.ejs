@@ -8,15 +8,12 @@
     <div class="row">
         <% for(user of all_users){ %>
             <!-- Individual user container -->
-            <div class="col-3 all-user-container" id="<%=user._id %>">
+            <div class="col-12 col-sm-6 col-md-3 all-user-container" id="<%=user._id %>">
                 <div class="row">
                     <div class="col-12">
                         <!-- Check if the user has an avatar and display it if available -->
-                        <%if(user.avatar){ %>
-                        <img src="<%=user.avatar%>"/>
-                        <%}else{%>
-                        <!-- Display a default image for users without avatars -->
-                        <img src="/images/unknown.jpeg"/>
+                        <%if(user.avatar.url){ %>
+                        <img src="<%=user.avatar.url%>"/>
                         <%}%>
                     </div>
                 </div>

@@ -12,7 +12,6 @@ $('.toggle-like-button').each(function(){
 
 // Iterate through toggle-noty elements and attach event handlers
 $('.toggle-noty').each(function(){
-    console.log('im in toggle noty')
     let self = this
     console.log('this',this)
      // Create a ToggleNoty instance for each element
@@ -21,7 +20,6 @@ $('.toggle-noty').each(function(){
 
 // Iterate through comment-form elements and attach event handlers
 $('.comment-form').each(function(){
-    console.log('im in comment form')
     let self = this
     // Create a PostComments instance for each form
     let postComments = new PostComments(self)
@@ -30,7 +28,6 @@ $('.comment-form').each(function(){
 // Click event handler for navigating to a user's profile when clicking on a user container
 $('.user-container').click(function(){
     let id = $(this).attr('id')
-    console.log('id',id)
     // Redirect to the user's profile page
     window.location.href = `http://localhost:8000/api/v1/users/display-profile/${id}`
 })
@@ -38,7 +35,6 @@ $('.user-container').click(function(){
 // Click event handler for navigating to a user's profile when clicking on a friend container
 $('.friend-container').click(function(){
     let id = $(this).attr('id')
-    console.log('id',id)
     // Redirect to the user's profile page
     window.location.href = `http://localhost:8000/api/v1/users/display-profile/${id}`
 })
@@ -46,7 +42,6 @@ $('.friend-container').click(function(){
 // Click event handler for navigating to a user's profile when clicking on an all user container
 $('.all-user-container').click(function(){
     let id = $(this).attr('id')
-    console.log('id',id)
     // Redirect to the user's profile page
     window.location.href = `http://localhost:8000/api/v1/users/display-profile/${id}`
 })

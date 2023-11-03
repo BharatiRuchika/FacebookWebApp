@@ -14,15 +14,13 @@
         <!-- Loop through a list of friends using EJS templating -->
         <% for(friend of friends){ %>
             <!-- Column for an individual friend's container -->
-            <div class="col-3 friend-container" id="<%=friend._id %>">
+            <div class="col-12 col-sm-6 col-md-3 friend-container" id="<%=friend._id %>">
                 <!-- Row for displaying friend's avatar -->
                 <div class="row">
                     <div class="col-12">
                         <!-- If the friend has an avatar image, display it; otherwise, display a default image -->
-                        <%if(friend.avatar){ %>
-                        <img src="<%=friend.avatar%>"/>
-                        <%}else{%>
-                        <img src="/images/unknown.jpeg"/>
+                        <%if(friend.avatar.url){ %>
+                        <img src="<%=friend.avatar.url%>"/>
                         <%}%>
                     </div>
                 </div>

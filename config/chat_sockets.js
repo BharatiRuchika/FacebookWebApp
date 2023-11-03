@@ -25,32 +25,26 @@ module.exports.chatSockets = function(socketServer){
 
          // Handle disconnections and leave chat rooms
         socket.on('disconnect',function(){
-            console.log('socket disconnected')
             socket.disconnect()
             socket.leave('codeial');
         })
 
         // Listen for "join_room" events and broadcast to the chatroom
         socket.on('join_room',function(data){
-            console.log('joining request received',data)
             socket.join(data.chatroom)
             io.in(data.chatroom).emit('user_joined',data)
         })
 
          // Listen for "send_message" events and broadcast to the chatroom
         socket.on('send_message',function(data){
-            console.log('im in send message',data)
             io.in(data.chatroom).emit('receive_message',data)
         })
 
         // Handle sending friend requests
         socket.on('send_friend_request', async(data) => {
-            console.log("im in send_friend_request ")
             const { senderUserId, targetUserId } = data;
-            console.log('senderUserId',senderUserId,'targetUserId',targetUserId)
             const targetSocket = users[targetUserId];
             let senderUser = await User.findById(senderUserId)
-            console.log('targetSocket',targetSocket)
             if (targetSocket) {
                 // Emit a 'friend_request' event to the target user's socket
                 targetSocket.emit('friend_request', {
@@ -67,9 +61,6 @@ module.exports.chatSockets = function(socketServer){
             const senderSocket = users[data.senderId]
             let senderUser = await User.findById(data.senderId)
             let targetUser = await User.findById(data.recipientId)
-            console.log('senderUser',senderUser)
-            console.log('targetUser',targetUser)
-            console.log('im in handleMessageRequest')
             // Create a new conversation and message
             const newConversation = await Conversation.findOneAndUpdate(
                 {
@@ -93,9 +84,7 @@ module.exports.chatSockets = function(socketServer){
                 text:data.messageText
               });
               await newMessage.save();
-        
-            
-            console.log('newConversation',newConversation)
+
             if(targetSocket){
                 // Emit a 'receive_target_msg' event to the target user's socket
                 targetSocket.emit('receive_target_msg',{senderUser,messageText:data.messageText,conversation:newConversation})

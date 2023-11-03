@@ -7,11 +7,10 @@
 
          <!-- User profile image -->
         <div class="col-2" id="post-container-profile">
-            <% if(post.user.avatar){%>
-                <img src="<%=post.user.avatar %>" />
-            <%}else{%>
-                <img src="/images/unknown.jpeg" />
+            <% if(post.user.avatar.url){%>
+                <img src="<%=post.user.avatar.url %>" />
             <%}%>
+            
         </div>
         <div class="col-8">
 
@@ -53,8 +52,8 @@
         <div class="col-12" id="post-container-post">
             
             <!-- Post image (if available) -->
-            <% if(post.postImage){%>
-                <img src="<%=post.postImage %>" />
+            <% if(post.postImage.url){%>
+                <img src="<%=post.postImage.url %>" />
             <%}%>
         </div>
     </div>

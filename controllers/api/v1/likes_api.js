@@ -44,7 +44,7 @@ module.exports.toggleLike = async function(req,res){
                 } 
             }
             likeable.save().then(() => {
-                console.log('likeable saved');
+                
             })
         }else{
             let newLike = await Like.create({
@@ -64,7 +64,6 @@ module.exports.toggleLike = async function(req,res){
             }
             likeable.likes.push(newLike._id)
             likeable.save().then(() => {
-                console.log('likeable saved');
             })
         }
         if(req.xhr){

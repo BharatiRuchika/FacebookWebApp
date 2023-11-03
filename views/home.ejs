@@ -21,11 +21,8 @@
                                             <div id="create-post-profile-image">
                                                  
                                                 <!-- User profile image -->
-                                                <% if(user.avatar){%>
-                                                <img src="<%=locals.user.avatar %>"
-                                                    alt="Profile Image">
-                                                <%}else{%>
-                                                    <img src="/images/unknown.jpeg"
+                                                <% if(user.avatar.url){%>
+                                                <img src="<%=locals.user.avatar.url%>"
                                                     alt="Profile Image">
                                                 <%}%>
                                     
@@ -57,7 +54,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div id="post-container">
                             <!-- Second row: User posts -->
                                     <% for(post of posts){ 
                                         let currentLike = post.likes.filter((item)=>{
@@ -83,9 +80,10 @@
                                             <%- include('_post',{
                                                 currentLike,
                                                 formattedDate
-                                            }) %>
+                                            }) %> 
                                         </div>
                                     <%}%>
+                                </div>
                             </div>
                             
                     
@@ -124,10 +122,8 @@
                                                 <!-- Friend's profile image -->
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <%if(UserInfo.friendships[i].avatar){ %>
-                                                        <img src="<%=UserInfo.friendships[i].avatar%>"/>
-                                                        <%}else{%>
-                                                        <img src="/images/unknown.jpeg"/>
+                                                        <%if(UserInfo.friendships[i].avatar.url){ %>
+                                                        <img src="<%=UserInfo.friendships[i].avatar.url%>"/>
                                                         <%}%>
                                                     </div>
                                                 </div>
@@ -151,10 +147,8 @@
                                                     <!-- Friend's profile image -->
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <%if(UserInfo.friendships[i].avatar){ %>
-                                                            <img src="<%=UserInfo.friendships[i].avatar%>"/>
-                                                            <%}else{%>
-                                                            <img src="/images/unknown.jpeg"/>
+                                                            <%if(UserInfo.friendships[i].avatar.url){ %>
+                                                            <img src="<%=UserInfo.friendships[i].avatar.url%>"/>
                                                             <%}%>
                                                         </div>
                                                     </div>
@@ -206,10 +200,8 @@
                                                 <!-- User's profile image -->
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <%if(user.avatar){ %>
-                                                        <img src="<%=all_users[i].avatar%>"/>
-                                                        <%}else{%>
-                                                        <img src="/images/unknown.jpeg"/>
+                                                        <%if(user.avatar.url){ %>
+                                                        <img src="<%=all_users[i].avatar.url%>"/>
                                                         <%}%>
                                                     </div>
                                                 </div>
@@ -231,10 +223,8 @@
                                                     <!-- User's profile image -->
                                                     <div class="row">
                                                         <div class="col-12">
-                                                            <%if(user.avatar){ %>
-                                                            <img src="<%=user.avatar%>"/>
-                                                            <%}else{%>
-                                                            <img src="/images/unknown.jpeg"/>
+                                                            <%if(user.avatar.url){ %>
+                                                            <img src="<%=user.avatar.url%>"/>
                                                             <%}%>
                                                         </div>
                                                     </div>

@@ -17,12 +17,12 @@
                     </div>
                     <div class="card-body">
                         <!-- Form for updating the profile picture -->
-                        <form action="/api/v1/users/updateProfile" method="post" enctype="multipart/form-data">
+                        <form action="" id="update-profile-form" method="POST" enctype="multipart/form-data">
                             <!-- Container for displaying the current user profile image -->
                             <div class="text-center mb-4" id="user-profile-image-container">
                                 <!-- Check if the user has an existing avatar; if so, display it, otherwise, display a default image -->
                                 <% if(user.avatar){%>
-                                    <img src="<%=user.avatar %>"
+                                    <img src="<%=user.avatar.url %>"
                                  alt="User Profile Picture" class="img-thumbnail"
                                     id="profile-image"/>
                                 <%}else{%>
@@ -41,7 +41,7 @@
 
                             <!-- Button to submit the form for picture upload -->
                             <div class="form-group text-center mt-4">
-                                <button type="submit" class="btn btn-primary">Upload Picture</button>
+                                <button type="submit" class="btn btn-primary" id="upload-button">Upload Picture</button>
                             </div>
                         </form>
                     </div>
@@ -52,3 +52,4 @@
 
    
 
+   

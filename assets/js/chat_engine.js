@@ -1,10 +1,5 @@
-console.log('chat engine loaded')
-
-
 class ChatEngine{
     constructor(chatBoxId,userId){
-        console.log('constructor called')
-        console.log('userId',userId)
         // Initialize the chat engine with the given chat box and user ID
         this.chatBox = $(`#${chatBoxId}`)
         this.socket = io.connect('http://localhost:5001')
@@ -12,7 +7,6 @@ class ChatEngine{
 
         // Check if the user is logged in
         if(this.currUserId){
-            console.log('im in userEmail')
             this.connectionHandler()
         }  
     }
@@ -21,7 +15,7 @@ class ChatEngine{
 
         // Handle socket connection
         this.socket.on('connect',function(){
-            console.log('connection established using sockets') 
+            
         })
         
         // Notify the server about the user's connection
@@ -35,12 +29,12 @@ class ChatEngine{
 
         // Handle user joined event
         self.socket.on('user_joined',function(data){
-            console.log('a user joined',data)
+            
         })
 
         // Handle user sign-out
         $('#sign-out').click(function(){
-            console.log('clicked')
+           
             // self.socket.emit('disconnect')
             self.socket.emit('leave_room', { chatroom: 'codeial' });
         })
@@ -48,11 +42,8 @@ class ChatEngine{
         // Handle form submission to send a new message
         $("#createMessageForm").submit(async function(e){
             e.preventDefault()
-            console.log('im in submit')
             var recipientId = $("#recipientId").val();
-            console.log('recipientId',recipientId)
             let formData = $(this).serialize()
-            console.log('formData',formData)
             let messageText = $("#inputField").val()
             //  handleMessageSender(formData)
             self.socket.emit('send_message', { formData ,senderId:self.currUserId,recipientId,messageText});
@@ -60,22 +51,21 @@ class ChatEngine{
 
          // Handle received messages from the sender
         self.socket.on('receive_sender_msg',(data)=>{
-            console.log('im in receive_sender_msg')
             const existingLi = document.querySelector(`#conversation-${data.conversation._id}`);
-            console.log('existingLi',existingLi)
-            console.log('receivedata',data)
             if(existingLi){
-                console.log('im in existing li')
                 const h6Element = existingLi.querySelector('h6');
+                const imgElement = existingLi.querySelector('img');
+                imgElement.src = `${data.targetUser.avatar.url}`
                 h6Element.textContent = `You: ${data.messageText}`;
+                
                 const friendMessagesContainer = document.getElementById('friend_messages_container');
                 friendMessagesContainer.insertBefore(existingLi, friendMessagesContainer.firstElementChild);
-                $(`#message-container-${data.targetUser._id}`).append('<div class="message float-right">' + data.messageText + '</div>');
-                var container = $("#message-container");
+                
+                $(`#message-container-${data.targetUser._id}`).append(`<div class="message float-right">` + data.messageText + '</div>');
+                var container = $('.message-container')
                 container.scrollTop(container[0].scrollHeight);
 
             }else{
-                console.log('im in new li')
                 const link = document.createElement('a');
                 link.style.color = 'black'
                 link.style.textDecoration = 'none'
@@ -89,7 +79,7 @@ class ChatEngine{
                     <div class="row modal-lists">
                         <div class="col-3 modal-profile-images">
                         <img 
-                        src="${data.targetUser.avatar ? `${data.targetUser.avatar}` : 'https://i.pinimg.com/736x/d0/4b/1f/d04b1f2ed3ca8ad4a302fbe9f4f5a875.jpg'}" />
+                        src="${data.targetUser.avatar.url}" />
                         </div>
                         <div class="col-9 modal-text">
                             <div class="row">
@@ -108,26 +98,25 @@ class ChatEngine{
                 link.appendChild(newLi);
                 const friendMessagesContainer = document.getElementById('friend_messages_container');
                 friendMessagesContainer.insertBefore(link, friendMessagesContainer.firstElementChild);
-                console.log('#message-container',$('#message-container'))
-                $(`#message-container-${data.targetUser._id}`).append('<div class="message float-right">' + data.messageText + '</div>');
+                $(`#message-container-${data.targetUser._id}`).append(`<div class="message float-right">` + data.messageText + '</div>');
             }
         })
 // Handle received messages from the target user
         self.socket.on('receive_target_msg',(data)=>{
-            console.log('im in receive_target_msg')
             const pingSound = new Audio('/Audio/bell.wav');
             pingSound.play()
-            console.log('receivedata',data)
             const existingLi = document.querySelector(`#conversation-${data.conversation._id}`);
-            console.log('existingLi',existingLi)
             if(existingLi){
                 const h6Element = existingLi.querySelector('h6');
                 h6Element.textContent = data.messageText;
+                const imgElement = existingLi.querySelector('img');
+                imgElement.src = `${data.senderUser.avatar.url}`
                 const friendMessagesContainer = document.getElementById('friend_messages_container');
                 friendMessagesContainer.insertBefore(existingLi, friendMessagesContainer.firstElementChild);
-                $(`#message-container-${data.senderUser._id}`).append('<div class="message float-left">' + data.messageText + '</div>');
+                
+                $(`#message-container-${data.senderUser._id}`).append(`<div class="message float-left"><img src=${data.senderUser.avatar.url}>` + data.messageText + '</div>');
+                
                 let messageCount = parseInt($('.message-counts').attr('data-message-requests'))
-                console.log('messageCount',messageCount)
                 let dataSeen = $(`#conversation-${data.conversation._id}`).attr('data-seen')
                 if(dataSeen=='false'){
                     console.log('messageCount',messageCount)
@@ -151,7 +140,7 @@ class ChatEngine{
                 <div class="row modal-lists">
                     <div class="col-3 modal-profile-images">
                     <img 
-                    src="${data.senderUser.avatar ? `${data.senderUser.avatar}` : 'https://i.pinimg.com/736x/d0/4b/1f/d04b1f2ed3ca8ad4a302fbe9f4f5a875.jpg'}" />
+                    src="${data.senderUser.avatar.url}" />
                     </div>
                     <div class="col-9 modal-text">
                         <div class="row">
@@ -169,7 +158,9 @@ class ChatEngine{
             link.appendChild(newLi);
             const friendMessagesContainer = document.getElementById('friend_messages_container');
             friendMessagesContainer.insertBefore(link, friendMessagesContainer.firstElementChild);
-            $(`#message-container-${data.senderUser._id}`).append('<div class="message float-left">' + data.messageText + '</div>');
+            
+            $(`#message-container-${data.senderUser._id}`).append(`<div class="message float-left"><img src=${data.senderUser.avatar.url}>` + data.messageText + '</div>');
+            
             let messageCount = parseInt($('.message-counts').attr('data-message-requests'))
             messageCount = messageCount+1
             $('.message-counts').text(messageCount);
@@ -181,7 +172,6 @@ class ChatEngine{
         
         // Handle adding a friend
         $('.add-friend-button').click(function(){
-            console.log('send friend request')
             let recipientId = $(this).attr('id')
             if($(this).attr('data-click')=='false'){
                 $(this).attr('data-click', 'true');
@@ -199,14 +189,10 @@ class ChatEngine{
     
         // Handle friend requests
         self.socket.on('friend_request', (data) => {
-            console.log('im in private_request_sent')
             const { senderUserId,targetUserId,senderUser } = data;
-            console.log('senderUserId',senderUserId,'targetUserId',targetUserId)
-            console.log(`Message sent to user ${targetUserId}`);
             const pingSound = new Audio('/Audio/bell.wav');
             pingSound.play()
             let newFriendRequest = updateFriendRequestsList(senderUser);
-            console.log('newFriendRequest',newFriendRequest)
             $('#friend_requests_container').prepend(newFriendRequest)
             let requestCount = parseInt($('.request-counts').attr('data-requests'))
             requestCount = requestCount+1
@@ -218,7 +204,6 @@ class ChatEngine{
         
         // Handle receiving messages
         self.socket.on('receive_message',function(data){
-            console.log('message received',data.message)
             let newMessage = $('<li>')
             let messageType = 'other-message'
             if(data.user_email==self.userEmail){

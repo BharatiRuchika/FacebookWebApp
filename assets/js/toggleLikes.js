@@ -10,7 +10,6 @@ class ToggleLike{
     // Method to handle toggling the "Like" functionality
     toggleLike(){
         $(this.toggler).click(function(e){
-            console.log('im here also')
             e.preventDefault()
             let self = this
             // Send an AJAX request to the server when the "Like" button is clicked
@@ -19,7 +18,6 @@ class ToggleLike{
                 url:$(self).attr('href')
             }).done(function(data){
                 // Handle the response from the server
-                console.log('datalikeable',data.data.likeable)
                  // Update the "Like" count and toggle the "Like" button
                 let likesCount = parseInt($(self).attr('data-likes'))
                 console.log(likesCount)
@@ -43,17 +41,15 @@ class ToggleLike{
                     ${emoji}
                     </a><span>${emojiType}</span>`
                 }
-                console.log('TYOE',data.data.type)
                 // Update the type of reaction and associated emoji data
                 const selector = `#${data.data.type}Reaction-${data.data.likeable._id}`;
-                console.log('element', $(selector));
                 $(`#${data.data.type}Reaction-${data.data.likeable._id}`).attr('data-emojis',JSON.stringify(data.data.likeable.emojis))
                 // Update the displayed like count
                 var $container = $(`.likeCount-${data.data.likeable._id}`)
                 const $span = $container.find('span');
                 $span.text(`${data.data.likeable.likes.length}`);
             }).fail(function(errData){
-                console.log('error in completing the request')
+                // console.log('error in completing the request')
             })
         })
     }

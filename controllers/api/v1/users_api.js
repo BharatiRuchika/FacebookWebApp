@@ -7,6 +7,8 @@ const Conversation = require("../../../models/conversation")
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const path = require('path')
+const crypto = require("crypto");
+const cloudinary = require("cloudinary");
 
 // Sign In Route
 module.exports.signIn = function(req,res){    
@@ -42,26 +44,36 @@ module.exports.display_profile_picture_form = async function(req,res){
 module.exports.updateProfilePicture = async function(req,res) {
     try{
         let user = await User.findById(req.user.id)
-        // Handle file upload using Multer
-        User.uploadedAvatar(req,res,function(err){
-            if(err){
-                console.log('****Multer Error',err)
-            }
-            // If a file is uploaded, update the user's avatar
+           // If a file is uploaded, update the user's avatar
             if(req.file){
                 if(user.avatar){
-                    fs.unlinkSync(path.join(__dirname,'../../../',user.avatar))
+                    // fs.unlinkSync(path.join(__dirname,'../../../',user.avatar))
+                    const image_id = user.avatar.public_id;
+                    const res = await cloudinary.v2.uploader.destroy(image_id);
                 }
-                user.avatar = User.avatarPath+ "/" + req.file.filename
+                const result = await cloudinary.v2.uploader.upload_stream({ 
+                    resource_type: 'auto',
+                    folder:'avatars'
+                }, async(error, result) => {
+                    if (error) {
+                      console.error(error);
+                      // Handle the error
+                    } else {
+                      // The result object contains the image URL
+                      const imageUrl = result.secure_url;
+                      user.avatar = {
+                        public_id: result.public_id,
+                        url: result.secure_url
+                    }
+                   await user.save()  
+                    }
+                  }).end(req.file.buffer);
             }
-
-            // Save the updated user
-            user.save()
             // Redirect with a success message
             req.flash('success','User Updated Succesfully')
             return res.redirect(`/api/v1/users/display-profile/${req.user.id}`)
-        })
     }catch(error){
+        console.log('error',error)
         return res.status(401).json({
             message:'Internal Server Error',
             success:false
@@ -96,7 +108,6 @@ module.exports.displayUserProfile = async function(req,res){
       options: { sort: { createdAt: -1 } }, 
     });
 
-    console.log('UserInfo',UserInfo)
     // Check if the user is a friend of the profile owner
     const isFriend = UserInfo.friendships.some(friend => friend.id === req.user.id );
 
@@ -212,30 +223,56 @@ module.exports.updateUser = async function(req,res){
 module.exports.createPost = async  function(req,res) {
     let id = req.user.id
     let user = await User.findById(req.user.id)     
-    // Create a new post
-    let post = await Post.create({
-        user:id,
-        content:req.body.content
-    })
-    // Add the post to the user's posts
-    user.posts.push(post._id)
-    user.save()
     if(req.file){
-        post.postImage = Post.avatarPath+ "/" + req.file.filename
-    }
-    post.save()
-    // Check if the request is an AJAX request and respond accordingly
-    if(req.xhr){
-        return res.status(200).json({
+        const result = await cloudinary.v2.uploader.upload_stream({ 
+            resource_type: 'auto',
+            folder:'facebook_posts'
+        }, async(error, result) => {
+            if (error) {
+              console.error(error);
+            } else {
+                const imageUrl = result.secure_url;
+                let post = await Post.create({
+                    user:id,
+                    content:req.body.content,
+                    postImage:{
+                        public_id: result.public_id,
+                        url: result.secure_url
+                    }
+                })
+                await user.posts.push(post._id)
+                await user.save()
+                await post.save()
+                if(req.xhr){
+                    return res.status(200).json({
+                    data:{
+                        post:post,
+                    },
+                    message:'Post created!'
+                    })
+                }
+                req.flash('success','Post published')  
+            }
+        }).end(req.file.buffer);  
+    }else{
+        let post = await Post.create({
+            user:id,
+            content:req.body.content,
+        })
+
+        await user.posts.push(post._id)
+        await user.save()
+
+        if(req.xhr){
+            return res.status(200).json({
             data:{
-                post:post
+                post:post,
             },
             message:'Post created!'
-        })
+            })
+        }
+        req.flash('success','Post published')  
     }
-    req.flash('success','Post published')
-    
-    
 }
 
 // Edit User Information
@@ -268,11 +305,16 @@ module.exports.create = async function(req,res){
     const user = await User.findOne({email})
     if(!user){
         // Create a new user
+        
         const data = await User.create({
             fullName,
             email,
             password,
-            dateOfBirth
+            dateOfBirth,
+            avatar: {
+                public_id: "avatars/default_avatar_zvlo1q",
+                url: "https://res.cloudinary.com/daeuzh0zl/image/upload/v1641879724/default_avatar_wzezlf.jpg"
+            }
         })
         // Flash a success message and redirect
         req.flash('success','sign up successfully')
@@ -371,7 +413,6 @@ module.exports.acceptFriendRequest = async function(req,res){
 
 // Reject Friend Request
 module.exports.rejectFriendRequest = async function(req,res){
-    console.log('im in rejectFriendRequest')
     try{
         let {from_user} = req.body
         let to_user = req.user.id

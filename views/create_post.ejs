@@ -60,7 +60,12 @@
     // Event listener for displaying emoji options
     emojiInput.addEventListener('click', function() {
         console.log('clicked')
-        newemoji.style.display = 'block';
+        if(newemoji.style.display=='block'){
+            newemoji.style.display = 'none';
+        }else{
+            newemoji.style.display = 'block';
+        }
+        
     });
      </script>
         
